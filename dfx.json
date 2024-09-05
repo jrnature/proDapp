@@ -15,9 +15,19 @@
       "main": "src/proDapp_backend/usuario/main.mo",
       "type": "motoko"
     },
+    "roles": {
+      "main": "src/proDapp_backend/rol/main.mo",
+      "type": "motoko"
+    },
+    "entes": {
+      "main": "src/proDapp_backend/ente/main.mo",
+      "type": "motoko"
+    },
     "proDapp_frontend": {
       "dependencies": [
-        "usuario"
+        "usuario",
+        "roles",
+        "entes"
       ],
       "source": [
         "src/proDapp_frontend/dist"

@@ -24,10 +24,6 @@ actor {
 
     };
 
-  type metaRol = {
-    rol   : Int;
-    };
-
   type metaUsuarioInput = {
     nombre : Text;
     puesto : Text;
