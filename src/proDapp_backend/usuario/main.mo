@@ -12,15 +12,15 @@ import Int "mo:base/Int";
 actor {
 
   type metaUsuario = {
-    idUsuario   : Nat8;
+    idUsuario   : Int;
     nombre : Text;
     puesto : Text;
-    ente : Nat8;
+    ente : Int;
     correo : Text;
     rol : Int;
     telefono : Text;
     username : Text;
-    password : Text:
+    password : Text;
 
     };
 
@@ -31,19 +31,18 @@ actor {
   type metaUsuarioInput = {
     nombre : Text;
     puesto : Text;
-    ente : Nat8;
+    ente : Int;
     correo : Text;
     rol : Int;
     telefono : Text;
     username : Text;
-    password : Text:
-    rol : Int;
+    password : Text;
   };
   
 
-  let usuarios = Map.HashMap<Text, metaUsuario>(0, Text.equal, Text.hash);
+  let usuarios = Map.HashMap<Int, metaUsuarioInput>(0, Int.equal, Int.hash);
 
-  public func newUsuario(idUsuario : Nat8, datos : metaUsuarioInput) : async () { 
+  public func newUsuario(idUsuario : Int, datos : metaUsuarioInput) : async () { 
 
     if (datos.username == "") {
       Debug.trap("Ingrese un nombre de usuario");
@@ -63,10 +62,10 @@ actor {
      if (datos.telefono == "") {
       Debug.trap("Ingrese un telefono de contacto");
     };
-    if (datos.ente == "") {
+    if (datos.ente == 0 ) {
       Debug.trap("Ingrese la clave de la organizacion");
     };
-    if (datos.rol == "") {
+    if (datos.rol == 0) {
       Debug.trap("Rol no reconocido");
     };
     
@@ -86,14 +85,14 @@ actor {
     Debug.print("Usuario agregado");
   };
 
-  public query func getUsuario(idUsuario : Text) : async metaUsuario  {
+  public query func getUsuario(idUsuario : Int) : async metaUsuarioInput  {
     let usuarioGet = usuarios.get(idUsuario);
     var aux = switch (usuarioGet) {
       case (null) {
         {
           nombre =""; 
           puesto="";
-          ente= Nat8(0);
+          ente= 0;
           correo="";
           rol=0;
           telefono="";
@@ -115,7 +114,7 @@ actor {
     };
   };
 
-  public func updateUsuario(idUsuario : Text, datos : metaUsuarioInput) : async () {
+  public func updateUsuario(idUsuario : Int, datos : metaUsuarioInput) : async () {
     if (datos.username == "") {
       Debug.trap("Ingrese un nombre de usuario");
     };
@@ -134,10 +133,10 @@ actor {
      if (datos.telefono == "") {
       Debug.trap("Ingrese un telefono de contacto");
     };
-    if (datos.ente == "") {
+    if (datos.ente == 0) {
       Debug.trap("Ingrese la clave de la organizacion");
     };
-    if (datos.rol == "") {
+    if (datos.rol == 0) {
       Debug.trap("Rol no reconocido");
     };
 
@@ -146,7 +145,7 @@ actor {
     };
   };
 
-  public func deleteUsuario(idUsuario : Text) : async () {
+  public func deleteUsuario(idUsuario : Int) : async () {
     if (usuarios.remove(idUsuario) == null) {
       Debug.trap("Usuario no encontrado");
     };

@@ -11,13 +11,13 @@
       "type": "custom",
       "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
     },
-    "proDapp_backend": {
-      "main": "src/proDapp_backend/main.mo",
+    "usuario": {
+      "main": "src/proDapp_backend/usuario/main.mo",
       "type": "motoko"
     },
     "proDapp_frontend": {
       "dependencies": [
-        "proDapp_backend"
+        "usuario"
       ],
       "source": [
         "src/proDapp_frontend/dist"

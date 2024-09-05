@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { proDapp_backend } from 'declarations/proDapp_backend';
+import { usuario } from 'declarations/usuario';
 
 function App() {
   const [greeting, setGreeting] = useState('');
