@@ -113,6 +113,22 @@ actor {
     };
   };
 
+  public query func tamano() : async Text {
+      var tama : Text = Nat.toText(entes.size());
+      return tama
+  };
+
+  public query func valores() : async Text {
+    var result : Text="";
+    var rolText : Text="";
+   rolText := "{";
+    for ((idEnte, datos) in entes.entries()) {
+        rolText #= "\"idEnte\" : "  # Int.toText(idEnte) # ",\"nombre\" : \"" # datos.nombre # "\",";
+    };
+    rolText #= "\"idEnte\":-1,\"nombre\":\"Seleccione una opcion\"}";
+    return rolText
+  };
+
   public shared (msg) func whoami() : async Principal {
     msg.caller;
   };

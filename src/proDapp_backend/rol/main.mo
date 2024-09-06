@@ -82,14 +82,6 @@ actor {
   };
 
   public query func tamano() : async Text {
-  //  let result = Text;
-  //  var rolText : Text="";
-  //  rolText := "{";
-  //  for ((idRol, datos) in roles.entries()) {
-  //      rolText := rolText # """clave"":" # key # ",""datos"":[""nombre"":""" # datos.nombre # """,""descripcion"":"""  # datos.descripcion # """ } ]"
-  //  };
-  //  rolText:=rolText # "}";
-  //  return rolText;t
       var tama : Text = Nat.toText(roles.size());
       return tama
   };
