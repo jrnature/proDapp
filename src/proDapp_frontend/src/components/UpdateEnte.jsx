@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const CreateEnte = ({ createEnte }) => {
+const UpdateEnte = ({ updateEnte }) => {
   const [ente, setEnte] = useState({
     idEnte: '',
     nombre: '',
@@ -21,35 +21,22 @@ const CreateEnte = ({ createEnte }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Convertir idEnte a número entero
       const idEnte = parseInt(ente.idEnte, 10);
-      
-      // Verificar si idEnte es un número válido
+
       if (isNaN(idEnte)) {
         alert('ID inválido. Por favor, ingrese un número entero para el ID.');
         return;
       }
 
-      // Llamada a la función createEnte pasando el ID y los datos del ente
-      const result = await createEnte(idEnte, {
-        nombre: ente.nombre,
-        director: ente.director,
-        correo: ente.correo,
-        telefono: ente.telefono,
-        enlace: ente.enlace,
+      await updateEnte(idEnte, {
+        nombre: ente.nombre.trim(),
+        director: ente.director.trim(),
+        correo: ente.correo.trim(),
+        telefono: ente.telefono.trim(),
+        enlace: ente.enlace.trim(),
       });
 
-      // Depurar el resultado
-      console.log('Resultado de createEnte:', result);
-
-      // Verificar si el resultado es un ID válido
-      if (result !== null ) {
-        alert(`Ente creado correctamente`);
-      } else {
-        alert('No se recibióeron datos validos. El ente podría no haber sido creado correctamente.');
-      }
-
-      // Limpiar el formulario después de enviar
+      alert('Ente actualizado correctamente');
       setEnte({
         idEnte: '',
         nombre: '',
@@ -59,13 +46,14 @@ const CreateEnte = ({ createEnte }) => {
         enlace: '',
       });
     } catch (error) {
-      console.error('Error al crear el ente:', error);
-      alert('Hubo un error al crear el ente. Por favor, intenta de nuevo.');
+      console.error('Error al actualizar el ente:', error);
+      alert('Error al actualizar el ente');
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <h2>Actualizar Ente</h2>
       <input
         type="number"
         name="idEnte"
@@ -114,18 +102,9 @@ const CreateEnte = ({ createEnte }) => {
         onChange={handleChange}
         required
       />
-      <button type="submit">Crear Ente</button>
+      <button type="submit">Actualizar Ente</button>
     </form>
   );
 };
 
-export default CreateEnte;
-
-
-
-
-
-
-
-
-
+export default UpdateEnte;
