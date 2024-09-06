@@ -1,31 +1,23 @@
-import { useState } from 'react';
-import { usuario } from 'declarations/usuario';
+import React from 'react';
+import CreateEnte from './components/CreateEnte';
+import { entes } from '../../declarations/entes/index.js';
 
-function App() {
-  const [greeting, setGreeting] = useState('');
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    const name = event.target.elements.name.value;
-    proDapp_backend.greet(name).then((greeting) => {
-      setGreeting(greeting);
-    });
-    return false;
-  }
+const App = () => {
+  const createEnte = async (idEnte, datos) => {
+    try {
+      return await entes.newEnte(idEnte, datos); 
+    } catch (error) {
+      console.error('Error al crear el ente:', error);
+      throw error;  
+    }
+  };
 
   return (
-    <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting">{greeting}</section>
-    </main>
+    <div>
+      <h1>Gestión de Entes</h1>
+      <CreateEnte createEnte={createEnte} />
+    </div>
   );
-}
+};
 
 export default App;

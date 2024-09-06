@@ -12,7 +12,7 @@ import Int "mo:base/Int";
 actor {
 
   type metaUsuario = {
-    idUsuario   : Int;
+    idUsuario  : Int;
     nombre : Text;
     puesto : Text;
     ente : Int;
@@ -21,7 +21,6 @@ actor {
     telefono : Text;
     username : Text;
     password : Text;
-
     };
 
   type metaUsuarioInput = {
