@@ -60,6 +60,7 @@ actor {
     );
 
     Debug.print("Usuario agregado");
+    
   };
 
   public query func getEnte(idEnte : Int) : async metaEnteInput  {
@@ -118,3 +119,5 @@ actor {
   };
 
 };
+
+
