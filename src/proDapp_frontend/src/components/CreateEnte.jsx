@@ -21,16 +21,11 @@ const CreateEnte = ({ createEnte }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Convertir idEnte a número entero
       const idEnte = parseInt(ente.idEnte, 10);
-      
-      // Verificar si idEnte es un número válido
       if (isNaN(idEnte)) {
         alert('ID inválido. Por favor, ingrese un número entero para el ID.');
         return;
       }
-
-      // Llamada a la función createEnte pasando el ID y los datos del ente
       const result = await createEnte(idEnte, {
         nombre: ente.nombre,
         director: ente.director,
@@ -39,17 +34,12 @@ const CreateEnte = ({ createEnte }) => {
         enlace: ente.enlace,
       });
 
-      // Depurar el resultado
-      console.log('Resultado de createEnte:', result);
-
-      // Verificar si el resultado es un ID válido
-      if (result !== null ) {
-        alert(`Ente creado correctamente`);
+      if (result !== null) {
+        alert('Ente creado correctamente');
       } else {
-        alert('No se recibióeron datos validos. El ente podría no haber sido creado correctamente.');
+        alert('No se recibió un resultado válido.');
       }
 
-      // Limpiar el formulario después de enviar
       setEnte({
         idEnte: '',
         nombre: '',
@@ -60,69 +50,93 @@ const CreateEnte = ({ createEnte }) => {
       });
     } catch (error) {
       console.error('Error al crear el ente:', error);
-      alert('Hubo un error al crear el ente. Por favor, intenta de nuevo.');
+      alert('Hubo un error al crear el ente. Intenta nuevamente.');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="number"
-        name="idEnte"
-        placeholder="ID del Ente"
-        value={ente.idEnte}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="nombre"
-        placeholder="Nombre"
-        value={ente.nombre}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="director"
-        placeholder="Director"
-        value={ente.director}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="email"
-        name="correo"
-        placeholder="Correo"
-        value={ente.correo}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="telefono"
-        placeholder="Teléfono"
-        value={ente.telefono}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="enlace"
-        placeholder="Enlace"
-        value={ente.enlace}
-        onChange={handleChange}
-        required
-      />
-      <button type="submit">Crear Ente</button>
-    </form>
+    <div className="container">
+      <h2 className="my-4">Crear Ente</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="idEnte" className="form-label">ID del Ente</label>
+          <input
+            type="number"
+            name="idEnte"
+            className="form-control"
+            placeholder="ID del Ente"
+            value={ente.idEnte}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="nombre" className="form-label">Nombre</label>
+          <input
+            type="text"
+            name="nombre"
+            className="form-control"
+            placeholder="Nombre"
+            value={ente.nombre}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="director" className="form-label">Director</label>
+          <input
+            type="text"
+            name="director"
+            className="form-control"
+            placeholder="Director"
+            value={ente.director}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="correo" className="form-label">Correo</label>
+          <input
+            type="email"
+            name="correo"
+            className="form-control"
+            placeholder="Correo"
+            value={ente.correo}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="telefono" className="form-label">Teléfono</label>
+          <input
+            type="text"
+            name="telefono"
+            className="form-control"
+            placeholder="Teléfono"
+            value={ente.telefono}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="enlace" className="form-label">Enlace</label>
+          <input
+            type="text"
+            name="enlace"
+            className="form-control"
+            placeholder="Enlace"
+            value={ente.enlace}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">Crear Ente</button>
+      </form>
+    </div>
   );
 };
 
 export default CreateEnte;
-
-
-
 
 
 

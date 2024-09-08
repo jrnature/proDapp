@@ -1,50 +1,24 @@
 import React, { useState } from 'react';
 
 const UpdateEnte = ({ updateEnte }) => {
-  const [ente, setEnte] = useState({
-    idEnte: '',
-    nombre: '',
-    director: '',
-    correo: '',
-    telefono: '',
-    enlace: '',
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEnte(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  const [idEnte, setIdEnte] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [director, setDirector] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [enlace, setEnlace] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const idEnte = parseInt(ente.idEnte, 10);
+      const datos = { nombre, director, correo, telefono, enlace };
+      const result = await updateEnte(parseInt(idEnte, 10), datos);
 
-      if (isNaN(idEnte)) {
-        alert('ID inválido. Por favor, ingrese un número entero para el ID.');
-        return;
-      }
+      // Aquí asumes que la respuesta es un objeto con los datos actualizados
+      console.log('Resultado de updateEnte:', result);
 
-      await updateEnte(idEnte, {
-        nombre: ente.nombre.trim(),
-        director: ente.director.trim(),
-        correo: ente.correo.trim(),
-        telefono: ente.telefono.trim(),
-        enlace: ente.enlace.trim(),
-      });
-
+      // Mostrar mensaje de éxito sin verificación adicional
       alert('Ente actualizado correctamente');
-      setEnte({
-        idEnte: '',
-        nombre: '',
-        director: '',
-        correo: '',
-        telefono: '',
-        enlace: '',
-      });
     } catch (error) {
       console.error('Error al actualizar el ente:', error);
       alert('Error al actualizar el ente');
@@ -52,58 +26,85 @@ const UpdateEnte = ({ updateEnte }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Actualizar Ente</h2>
-      <input
-        type="number"
-        name="idEnte"
-        placeholder="ID del Ente"
-        value={ente.idEnte}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="nombre"
-        placeholder="Nombre"
-        value={ente.nombre}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="director"
-        placeholder="Director"
-        value={ente.director}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="email"
-        name="correo"
-        placeholder="Correo"
-        value={ente.correo}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="telefono"
-        placeholder="Teléfono"
-        value={ente.telefono}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="enlace"
-        placeholder="Enlace"
-        value={ente.enlace}
-        onChange={handleChange}
-        required
-      />
-      <button type="submit">Actualizar Ente</button>
-    </form>
+    <div className="container mt-5">
+      <h2 className="mb-4">Actualizar Ente</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="idEnte" className="form-label">ID del Ente</label>
+          <input
+            type="number"
+            className="form-control"
+            id="idEnte"
+            value={idEnte}
+            onChange={(e) => setIdEnte(e.target.value)}
+            placeholder="Ingresa el ID del ente"
+            required
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="nombre" className="form-label">Nombre</label>
+          <input
+            type="text"
+            className="form-control"
+            id="nombre"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            placeholder="Ingresa el nombre del ente"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="director" className="form-label">Director</label>
+          <input
+            type="text"
+            className="form-control"
+            id="director"
+            value={director}
+            onChange={(e) => setDirector(e.target.value)}
+            placeholder="Ingresa el nombre del director"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="correo" className="form-label">Correo Electrónico</label>
+          <input
+            type="email"
+            className="form-control"
+            id="correo"
+            value={correo}
+            onChange={(e) => setCorreo(e.target.value)}
+            placeholder="Ingresa el correo electrónico"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="telefono" className="form-label">Teléfono</label>
+          <input
+            type="text"
+            className="form-control"
+            id="telefono"
+            value={telefono}
+            onChange={(e) => setTelefono(e.target.value)}
+            placeholder="Ingresa el número de teléfono"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="enlace" className="form-label">Enlace</label>
+          <input
+            type="text"
+            className="form-control"
+            id="enlace"
+            value={enlace}
+            onChange={(e) => setEnlace(e.target.value)}
+            placeholder="Ingresa el enlace del ente"
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary">Actualizar</button>
+      </form>
+    </div>
   );
 };
 
