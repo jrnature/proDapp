@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importamos el JS de Bootstrap
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
 import CreateEnte from './components/CreateEnte';
 import QueryEnte from './components/QueryEnte';
 import UpdateEnte from './components/UpdateEnte';
@@ -10,8 +10,13 @@ import CreateRol from './components/CreateRol';
 import DeleteRol from './components/DeleteRol';
 import QueryRol from './components/QueryRol';
 import UpdateRol from './components/UpdateRol';
+import CreateUser from './components/CreateUser';
+import QueryUser from './components/QueryUser';
+import UpdateUser from './components/UpdateUSer';
+import DeleteUser from './components/DeleteUser';
 import { entes } from '../../declarations/entes/index.js';
-import { roles } from '../../declarations/roles/index.js'; // Asumiendo que existe una declaración para roles
+import { roles } from '../../declarations/roles/index.js'; 
+import { usuario } from '../../declarations/usuario/index.js';
 
 const App = () => {
   const createEnte = async (idEnte, datos) => {
@@ -88,6 +93,44 @@ const App = () => {
     }
   };
 
+  // Funciones para Usuarios
+  const createUser = async (idUsuario, datos) => {
+    try {
+      return await usuario.newUsuario(idUsuario, datos);
+    } catch (error) {
+      console.error('Error al crear el usuario:', error);
+      throw error;
+    }
+  };
+
+  const getUser = async (idUsuario) => {
+    try {
+      return await usuario.getUsuario(idUsuario);
+    } catch (error) {
+      console.error('Error al consultar el usuario:', error);
+      throw error;
+    }
+  };
+
+  const updateUser = async (idUsuario, datos) => {
+    try {
+      return await usuario.updateUsuario(idUsuario, datos);
+    } catch (error) {
+      console.error('Error al actualizar el usuario:', error);
+      throw error;
+    }
+  };
+
+  const deleteUser = async (idUsuario) => {
+    try {
+      const response = await usuario.deleteUsuario(idUsuario);
+      return response;
+    } catch (error) {
+      console.error('Error al eliminar el usuario:', error);
+      throw error;
+    }
+  };
+
   return (
     <Router>
       <nav className="navbar navbar-expand-lg navbar-light bg-dark">
@@ -133,6 +176,7 @@ const App = () => {
                 <ul className="dropdown-menu" aria-labelledby="usuariosDropdown">
                   <li><Link className="dropdown-item" to="/createUser">Crear Usuario</Link></li>
                   <li><Link className="dropdown-item" to="/queryUser">Consultar Usuario</Link></li>
+                  <li><Link className="dropdown-item" to="/updateUser">Actualizar Usuario</Link></li>
                   <li><Link className="dropdown-item" to="/deleteUser">Eliminar Usuario</Link></li>
                 </ul>
               </li>
@@ -151,6 +195,10 @@ const App = () => {
         <Route path="/queryRol" element={<QueryRol getRol={getRol} />} />
         <Route path="/updateRol" element={<UpdateRol updateRol={updateRol} />} />
         <Route path="/deleteRol" element={<DeleteRol deleteRol={deleteRol} />} />
+        <Route path="/createUser" element={<CreateUser createUser={createUser} />} />
+        <Route path="/queryUser" element={<QueryUser getUser={getUser} />} />
+        <Route path="/updateUser" element={<UpdateUser updateUser={updateUser} />} />
+        <Route path="/deleteUser" element={<DeleteUser deleteUser={deleteUser} />} />
       </Routes>
     </Router>
   );
