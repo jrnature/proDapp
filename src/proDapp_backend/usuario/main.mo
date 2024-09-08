@@ -146,6 +146,11 @@ actor {
     };
   };
 
+  public query func tamano() : async Text {
+      var tama : Text = Nat.toText(usuarios.size());
+      return tama
+  };
+
   public shared (msg) func whoami() : async Principal {
     msg.caller;
   };

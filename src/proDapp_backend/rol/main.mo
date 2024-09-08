@@ -81,6 +81,23 @@ actor {
     };
   };
 
+  public query func tamano() : async Text {
+      var tama : Text = Nat.toText(roles.size());
+      return tama
+  };
+
+  public query func valores() : async Text {
+    var result : Text="";
+    var rolText : Text="";
+   rolText := "{";
+    for ((idRol, datos) in roles.entries()) {
+        rolText #= "\"idRol\" : "  # Int.toText(idRol) # ",\"nombre\" : \"" # datos.nombre # "\" , \"descripcion\": \"" # datos.descripcion # "\","
+    };
+    rolText #= "\"idRol\":-1,\"nombre\":\"Seleccione una opcion\",\"descripcion\":\"Selecciona una opcion\"}";
+      
+      return rolText
+  };
+
   public shared (msg) func whoami() : async Principal {
     msg.caller;
   };
