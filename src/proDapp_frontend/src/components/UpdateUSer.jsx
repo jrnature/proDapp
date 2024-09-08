@@ -1,82 +1,153 @@
 import React, { useState } from 'react';
 
-const UpdateUser = () => {
-  const [user, setUser] = useState({
-    idUsuario: '',
-    nombre: '',
-    puesto: '',
-    ente: '',
-    correo: '',
-    rol: '',
-    telefono: '',
-    username: '',
-    password: ''
-  });
-
-  const handleChange = (e) => {
-    setUser({
-      ...user,
-      [e.target.name]: e.target.value
-    });
-  };
+const UpdateUser = ({ updateUser }) => {
+  const [idUsuario, setIdUsuario] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [puesto, setPuesto] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [ente, setEnte] = useState('');
+  const [rol, setRol] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch('/api/updateUser', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-      });
-      alert('Usuario actualizado con éxito');
+      const datos = {
+        nombre,
+        puesto,
+        correo,
+        telefono,
+        username,
+        password,
+        ente: parseInt(ente, 10),
+        rol: parseInt(rol, 10)
+      };
+      const result = await updateUser(parseInt(idUsuario, 10), datos);
+
+      console.log('Resultado de updateUser:', result);
+      alert('Usuario actualizado correctamente');
     } catch (error) {
       console.error('Error al actualizar el usuario:', error);
+      alert('Error al actualizar el usuario');
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Actualizar Usuario</h2>
+    <div className="container mt-5">
+      <h2 className="mb-4">Actualizar Usuario</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="idUsuario" className="form-label">ID Usuario</label>
-          <input type="number" id="idUsuario" name="idUsuario" className="form-control" placeholder="ID Usuario" onChange={handleChange} value={user.idUsuario} required />
+          <label htmlFor="idUsuario" className="form-label">ID del Usuario</label>
+          <input
+            type="number"
+            className="form-control"
+            id="idUsuario"
+            value={idUsuario}
+            onChange={(e) => setIdUsuario(e.target.value)}
+            placeholder="Ingresa el ID del usuario"
+            required
+          />
         </div>
+
         <div className="mb-3">
           <label htmlFor="nombre" className="form-label">Nombre</label>
-          <input type="text" id="nombre" name="nombre" className="form-control" placeholder="Nombre" onChange={handleChange} value={user.nombre} />
+          <input
+            type="text"
+            className="form-control"
+            id="nombre"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            placeholder="Ingresa el nombre del usuario"
+          />
         </div>
+
         <div className="mb-3">
           <label htmlFor="puesto" className="form-label">Puesto</label>
-          <input type="text" id="puesto" name="puesto" className="form-control" placeholder="Puesto" onChange={handleChange} value={user.puesto} />
+          <input
+            type="text"
+            className="form-control"
+            id="puesto"
+            value={puesto}
+            onChange={(e) => setPuesto(e.target.value)}
+            placeholder="Ingresa el puesto del usuario"
+          />
         </div>
+
         <div className="mb-3">
-          <label htmlFor="ente" className="form-label">Ente</label>
-          <input type="number" id="ente" name="ente" className="form-control" placeholder="Ente" onChange={handleChange} value={user.ente} />
+          <label htmlFor="correo" className="form-label">Correo Electrónico</label>
+          <input
+            type="email"
+            className="form-control"
+            id="correo"
+            value={correo}
+            onChange={(e) => setCorreo(e.target.value)}
+            placeholder="Ingresa el correo electrónico"
+          />
         </div>
-        <div className="mb-3">
-          <label htmlFor="correo" className="form-label">Correo</label>
-          <input type="email" id="correo" name="correo" className="form-control" placeholder="Correo" onChange={handleChange} value={user.correo} />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="rol" className="form-label">Rol</label>
-          <input type="number" id="rol" name="rol" className="form-control" placeholder="Rol" onChange={handleChange} value={user.rol} />
-        </div>
+
         <div className="mb-3">
           <label htmlFor="telefono" className="form-label">Teléfono</label>
-          <input type="tel" id="telefono" name="telefono" className="form-control" placeholder="Teléfono" onChange={handleChange} value={user.telefono} />
+          <input
+            type="text"
+            className="form-control"
+            id="telefono"
+            value={telefono}
+            onChange={(e) => setTelefono(e.target.value)}
+            placeholder="Ingresa el número de teléfono"
+          />
         </div>
+
         <div className="mb-3">
-          <label htmlFor="username" className="form-label">Nombre de Usuario</label>
-          <input type="text" id="username" name="username" className="form-control" placeholder="Nombre de Usuario" onChange={handleChange} value={user.username} />
+          <label htmlFor="username" className="form-label">Username</label>
+          <input
+            type="text"
+            className="form-control"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Ingresa el nombre de usuario"
+          />
         </div>
+
         <div className="mb-3">
-          <label htmlFor="password" className="form-label">Contraseña</label>
-          <input type="password" id="password" name="password" className="form-control" placeholder="Contraseña" onChange={handleChange} value={user.password} />
+          <label htmlFor="password" className="form-label">Password</label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Ingresa la contraseña"
+          />
         </div>
-        <button type="submit" className="btn btn-warning">Actualizar Usuario</button>
+
+        <div className="mb-3">
+          <label htmlFor="ente" className="form-label">Ente</label>
+          <input
+            type="number"
+            className="form-control"
+            id="ente"
+            value={ente}
+            onChange={(e) => setEnte(e.target.value)}
+            placeholder="Ingresa la clave del ente"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="rol" className="form-label">Rol</label>
+          <input
+            type="number"
+            className="form-control"
+            id="rol"
+            value={rol}
+            onChange={(e) => setRol(e.target.value)}
+            placeholder="Ingresa el rol del usuario"
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary">Actualizar</button>
       </form>
     </div>
   );

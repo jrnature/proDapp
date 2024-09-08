@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-const QueryUser = () => {
+const QueryUser = ({ getUser }) => {
   const [idUsuario, setIdUsuario] = useState('');
   const [user, setUser] = useState(null);
 
@@ -11,49 +10,51 @@ const QueryUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      // Aquí llamas a la función para obtener los detalles del usuario
-      const response = await fetch(`/api/queryUser?idUsuario=${idUsuario}`);
-      const data = await response.json();
-      setUser(data);
+      const userData = await getUser(parseInt(idUsuario, 10));
+      if (userData) {
+        setUser(userData);
+      } else {
+        alert('Usuario no encontrado');
+      }
     } catch (error) {
       console.error('Error al consultar el usuario:', error);
+      alert('Error al consultar el usuario');
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Consultar Usuario</h2>
+    <div className="container mt-5">
+      <h2 className="mb-4">Consultar Usuario</h2>
       <form onSubmit={handleSubmit} className="mb-4">
         <div className="mb-3">
-          <label htmlFor="idUsuario" className="form-label">ID Usuario</label>
-          <input 
-            type="number" 
-            id="idUsuario" 
-            name="idUsuario" 
-            className="form-control" 
-            placeholder="Ingrese el ID del Usuario" 
-            onChange={handleChange} 
-            value={idUsuario} 
-            required 
+          <label htmlFor="idUsuario" className="form-label">ID del Usuario</label>
+          <input
+            type="number"
+            name="idUsuario"
+            className="form-control"
+            placeholder="Ingresa el ID del usuario"
+            value={idUsuario}
+            onChange={handleChange}
+            required
           />
         </div>
-        <button type="submit" className="btn btn-primary">Consultar Usuario</button>
+        <button type="submit" className="btn btn-primary">Consultar</button>
       </form>
+
       {user && (
-        <div className="mt-4 p-3 border rounded bg-light">
-          <h3>Detalles del Usuario</h3>
-          <ul className="list-unstyled">
-            <li><strong>ID:</strong> {user.idUsuario}</li>
-            <li><strong>Nombre:</strong> {user.nombre}</li>
-            <li><strong>Puesto:</strong> {user.puesto}</li>
-            <li><strong>Ente:</strong> {user.ente}</li>
-            <li><strong>Correo:</strong> {user.correo}</li>
-            <li><strong>Rol:</strong> {user.rol}</li>
-            <li><strong>Teléfono:</strong> {user.telefono}</li>
-            <li><strong>Nombre de Usuario:</strong> {user.username}</li>
-            <li><strong>Contraseña:</strong> {user.password}</li>
-          </ul>
+        <div className="card">
+          <div className="card-body">
+            <h3 className="card-title">Detalles del Usuario</h3>
+            <p className="card-text"><strong>Nombre:</strong> {user.nombre}</p>
+            <p className="card-text"><strong>Puesto:</strong> {user.puesto}</p>
+            <p className="card-text"><strong>Correo:</strong> {user.correo}</p>
+            <p className="card-text"><strong>Teléfono:</strong> {user.telefono}</p>
+            <p className="card-text"><strong>Username:</strong> {user.username}</p>
+            <p className="card-text"><strong>Rol:</strong> {user.rol}</p>
+            <p className="card-text"><strong>Ente:</strong> {user.ente}</p>
+          </div>
         </div>
       )}
     </div>

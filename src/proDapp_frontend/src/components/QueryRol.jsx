@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { Table, Spinner, Alert, Form, Button } from 'react-bootstrap';
 
-const ViewRoles = ({ getRolesById }) => {
+const QueryRol = ({ getRol }) => {
   const [idRol, setIdRol] = useState('');
-  const [role, setRole] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [rol, setRol] = useState(null);
 
   const handleChange = (e) => {
     setIdRol(e.target.value);
@@ -13,75 +10,50 @@ const ViewRoles = ({ getRolesById }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
 
     try {
-      const data = await getRolesById(parseInt(idRol, 10));
-      if (data) {
-        setRole(data);
+      const rolData = await getRol(parseInt(idRol, 10));
+      if (rolData) {
+        setRol(rolData);
       } else {
-        setError('Rol no encontrado.');
-        setRole(null);
+        alert('Rol no encontrado');
       }
-    } catch (err) {
-      setError('Error al obtener el rol.');
-      console.error('Error al obtener el rol:', err);
-      setRole(null);
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      console.error('Error al consultar el rol:', error);
+      alert('Error al consultar el rol');
     }
   };
 
   return (
     <div className="container mt-5">
       <h2 className="mb-4">Consultar Rol</h2>
-      <Form onSubmit={handleSubmit} className="mb-4">
-        <Form.Group controlId="idRol">
-          <Form.Label>ID del Rol</Form.Label>
-          <Form.Control
+      <form onSubmit={handleSubmit} className="mb-4">
+        <div className="mb-3">
+          <label htmlFor="idRol" className="form-label">ID del Rol</label>
+          <input
             type="number"
+            name="idRol"
+            className="form-control"
             placeholder="Ingresa el ID del rol"
             value={idRol}
             onChange={handleChange}
             required
           />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Consultar
-        </Button>
-      </Form>
+        </div>
+        <button type="submit" className="btn btn-primary">Consultar</button>
+      </form>
 
-      {loading ? (
-        <Spinner animation="border" />
-      ) : error ? (
-        <Alert variant="danger">
-          {error}
-        </Alert>
-      ) : role ? (
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Descripción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr key={role.idRol}>
-              <td>{role.idRol}</td>
-              <td>{role.nombre}</td>
-              <td>{role.descripcion}</td>
-            </tr>
-          </tbody>
-        </Table>
-      ) : (
-        <Alert variant="info">
-          Ingresa un ID de rol para consultar
-        </Alert>
+      {rol && (
+        <div className="card">
+          <div className="card-body">
+            <h3 className="card-title">Detalles del Rol</h3>
+            <p className="card-text"><strong>Nombre:</strong> {rol.nombre}</p>
+            <p className="card-text"><strong>Descripción:</strong> {rol.descripcion}</p>
+          </div>
+        </div>
       )}
     </div>
   );
 };
 
-export default ViewRoles;
+export default QueryRol;
