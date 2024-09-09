@@ -19,7 +19,7 @@ const DeleteUser = ({ deleteUser }) => {
         return;
       }
 
-      // Asegúrate de que deleteUser sea una función
+      
       if (typeof deleteUser !== 'function') {
         throw new Error('La función deleteUser no está definida correctamente');
       }

@@ -14,7 +14,7 @@ const UpdateEnte = ({ updateEnte }) => {
       const datos = { nombre, director, correo, telefono, enlace };
       const result = await updateEnte(parseInt(idEnte, 10), datos);
 
-      // Aquí asumes que la respuesta es un objeto con los datos actualizados
+      
       console.log('Resultado de updateEnte:', result);
 
       // Mostrar mensaje de éxito sin verificación adicional
