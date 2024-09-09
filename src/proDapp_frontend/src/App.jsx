@@ -48,11 +48,12 @@ const App = () => {
 
   const deleteEnte = async (idEnte) => {
     try {
-      const response = await entes.deleteEnte(idEnte);
-      return response;
+      // Llamamos al método deleteUsuario del actor se cambia el estandar de ente por usuario
+      await entes.deleteUsuario(idEnte);
+      return true;
     } catch (error) {
       console.error('Error al eliminar el ente:', error);
-      throw error;
+      throw error; // Propagamos el error para manejarlo en el componente
     }
   };
 
