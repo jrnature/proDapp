@@ -10,7 +10,7 @@ const Evaluacion = () => {
     fechaInicio: '',
     fechaFin: '',
     evaluador: 0,
-    resultado: 0,
+    resultado: '',
     estado: 0,
   });
   const [datos1, setDatos1] = useState({
@@ -19,7 +19,7 @@ const Evaluacion = () => {
     fechaInicio: '',
     fechaFin: '',
     evaluador: 0,
-    resultado: 0,
+    resultado: '',
     estado: 0,
   });
   const [message, setMessage] = useState('');
@@ -34,16 +34,22 @@ const Evaluacion = () => {
     setFolio(e.target.value);
   };
 
-  const handleCreate = async () => {
+  const handleCreate = async () => {  
     datos1.ente=parseInt(datos.ente)
+    console.log(2);
     datos1.usuario=parseInt(datos.usuario)
+    console.log(3);
     datos1.resultado=parseInt(datos.resultado)
+    console.log(4);
     datos1.evaluador=parseInt(datos.evaluador)
+    console.log(5);
     datos1.estado=parseInt(datos.estado)
+    console.log(6);
     datos1.fechaInicio=datos.fechaInicio
+    console.log(7);
     datos1.fechaFin=datos.fechaFin
     try {
-      await evaluaciones.newEvaluacion(parseInt(folio), datos);
+      await evaluacion.newEvaluacion(parseInt(folio), datos);
       setMessage('Evaluación creada con éxito.');
     } catch (error) 
       {
@@ -155,7 +161,7 @@ const Evaluacion = () => {
         <Form.Group controlId="resultado">
           <Form.Label>Resultado</Form.Label>
           <Form.Control
-            type="number"
+            type="text"
             name="resultado"
             placeholder="Ingrese el resultado"
             value={datos.resultado}
@@ -171,6 +177,7 @@ const Evaluacion = () => {
             value={datos.estado}
             onChange={handleInputChange}
           />
+          <br />
         </Form.Group>
         <Button variant="primary" onClick={handleCreate}>Crear Evaluación</Button>
         <Button variant="secondary" className="ms-2" onClick={handleGet}>Consultar Evaluación</Button>
