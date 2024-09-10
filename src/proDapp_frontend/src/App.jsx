@@ -16,6 +16,7 @@ import QueryUser from './components/QueryUser';
 import UpdateUser from './components/UpdateUSer';
 import DeleteUser from './components/DeleteUser';
 import Evaluacion from './components/Evaluacion';
+import Version from './components/Version.jsx';
 import { entes } from '../../declarations/entes/index.js';
 import { roles } from '../../declarations/roles/index.js';
 import { usuario } from '../../declarations/usuario/index.js';
@@ -189,6 +190,11 @@ const App = () => {
                 <Link className="nav-link text-white" to="/evaluacion">Evaluaciones</Link>
               </li>
 
+              {/* Enlace para Version */}
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/version">Versión</Link>
+              </li>
+
 
             </ul>
           </div>
@@ -260,6 +266,7 @@ const App = () => {
         <Route path="/updateUser" element={<UpdateUser updateUser={updateUser} />} />
         <Route path="/deleteUser" element={<DeleteUser deleteUser={deleteUser} />} />
         <Route path="/evaluacion" element={<Evaluacion />} />
+        <Route path="/version" element={<Version />} />
       </Routes>
     </Router>
   );
