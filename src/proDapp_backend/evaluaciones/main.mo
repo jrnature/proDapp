@@ -8,6 +8,8 @@ import Debug "mo:base/Debug";
 import Nat16 "mo:base/Nat16";
 import Hash "mo:base/Hash";
 import Int "mo:base/Int";
+import Autoevaluacion "canister:autoevaluaciones";
+import Pregunta "canister:preguntas";
 
 actor {
 
@@ -36,6 +38,7 @@ actor {
   let evaluaciones = Map.HashMap<Int, metaEvaluacionInput>(0, Int.equal, Int.hash);
 
   public func newEvaluacion(folio : Int, datos : metaEvaluacionInput) : async () { 
+    //var preguntasActivas : Pregunta ;
     if (datos.ente == 0) {
       Debug.trap("Ingrese el ente obligado");
     };
@@ -57,7 +60,6 @@ actor {
     if (datos.estado == 0) {
       Debug.trap("Ingrese el estado que realizará en la evaluacion");
     };
-    
     evaluaciones.put(folio, 
       {
         ente =datos.ente; 
@@ -68,6 +70,8 @@ actor {
         resultado=datos.resultado;
         estado=datos.estado;
       } 
+    
+
     );
 
     Debug.print("Evaluación creada");
