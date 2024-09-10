@@ -10,7 +10,7 @@ const Evaluacion = () => {
     fechaInicio: '',
     fechaFin: '',
     evaluador: 0,
-    resultado: '',
+    resultado: 0,
     estado: 0,
   });
   const [datos1, setDatos1] = useState({
@@ -19,7 +19,7 @@ const Evaluacion = () => {
     fechaInicio: '',
     fechaFin: '',
     evaluador: 0,
-    resultado: '',
+    resultado: 0,
     estado: 0,
   });
   const [message, setMessage] = useState('');
@@ -34,22 +34,16 @@ const Evaluacion = () => {
     setFolio(e.target.value);
   };
 
-  const handleCreate = async () => {  
+  const handleCreate = async () => {
     datos1.ente=parseInt(datos.ente)
-    console.log(2);
     datos1.usuario=parseInt(datos.usuario)
-    console.log(3);
     datos1.resultado=parseInt(datos.resultado)
-    console.log(4);
     datos1.evaluador=parseInt(datos.evaluador)
-    console.log(5);
     datos1.estado=parseInt(datos.estado)
-    console.log(6);
     datos1.fechaInicio=datos.fechaInicio
-    console.log(7);
     datos1.fechaFin=datos.fechaFin
     try {
-      await evaluacion.newEvaluacion(parseInt(folio), datos);
+      await evaluacion.newEvaluacion(parseInt(folio), datos1);
       setMessage('Evaluación creada con éxito.');
     } catch (error) 
       {
@@ -60,16 +54,36 @@ const Evaluacion = () => {
   const handleGet = async () => {
     try {
       const result = await evaluacion.getEvaluacion(parseInt(folio));
-      setDatos(result);
+      // Verificar y convertir BigInt a string
+      const datosConBigIntConvertidos = {
+        ...result,
+        ente: typeof result.ente === 'bigint' ? result.ente.toString() : result.ente,
+        usuario: typeof result.usuario === 'bigint' ? result.usuario.toString() : result.usuario,
+        evaluador: typeof result.evaluador === 'bigint' ? result.evaluador.toString() : result.evaluador,
+        resultado: typeof result.resultado === 'bigint' ? result.resultado.toString() : result.resultado,
+        estado: typeof result.estado === 'bigint' ? result.estado.toString() : result.estado,
+      };
+      setDatos(datosConBigIntConvertidos);
       setMessage('Evaluación consultada con éxito.');
     } catch (error) {
       setMessage('Error al consultar la evaluación.');
     }
   };
-
   const handleUpdate = async () => {
     try {
-      await evaluacion.updateEvaluacion(parseInt(folio), datos);
+      // Convertir los valores a tipos apropiados
+      const datosAEnviar = {
+        ...datos,
+        ente: parseInt(datos.ente),
+        usuario: parseInt(datos.usuario),
+        resultado: parseInt(datos.resultado),
+        evaluador: parseInt(datos.evaluador),
+        estado: parseInt(datos.estado),
+        fechaInicio: datos.fechaInicio,
+        fechaFin: datos.fechaFin,
+      };
+      
+      await evaluacion.updateEvaluacion(parseInt(folio), datosAEnviar);
       setMessage('Evaluación actualizada con éxito.');
     } catch (error) {
       setMessage('Error al actualizar la evaluación.');
@@ -86,7 +100,7 @@ const Evaluacion = () => {
         fechaInicio: '',
         fechaFin: '',
         evaluador: 0,
-        resultado: '',
+        resultado: 0,
         estado: 0,
       });
     } catch (error) {
@@ -161,7 +175,7 @@ const Evaluacion = () => {
         <Form.Group controlId="resultado">
           <Form.Label>Resultado</Form.Label>
           <Form.Control
-            type="text"
+            type="number"
             name="resultado"
             placeholder="Ingrese el resultado"
             value={datos.resultado}
@@ -179,10 +193,16 @@ const Evaluacion = () => {
           />
           <br />
         </Form.Group>
-        <Button variant="primary" onClick={handleCreate}>Crear Evaluación</Button>
-        <Button variant="secondary" className="ms-2" onClick={handleGet}>Consultar Evaluación</Button>
-        <Button variant="warning" className="ms-2" onClick={handleUpdate}>Actualizar Evaluación</Button>
-        <Button variant="danger" className="ms-2" onClick={handleDelete}>Eliminar Evaluación</Button>
+
+        <Form.Group className="mt-3">
+          <div className="d-grid gap-2">
+            <Button variant="primary" onClick={handleCreate}>Crear Evaluación</Button>
+            <Button variant="secondary" onClick={handleGet}>Consultar Evaluación</Button>
+            <Button variant="warning" onClick={handleUpdate}>Actualizar Evaluación</Button>
+            <Button variant="danger" onClick={handleDelete}>Eliminar Evaluación</Button>
+          </div>
+        </Form.Group>
+
       </Form>
       <div className="mt-4">
         <h4>Resultado:</h4>

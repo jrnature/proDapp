@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
-import { versiones } from '../../../declarations/versiones/index'; 
+import { versiones } from '../../../declarations/versiones/index';
 
 const Version = () => {
   const [idVersion, setIdVersion] = useState('');
@@ -95,10 +95,14 @@ const Version = () => {
             onChange={handleInputChange}
           />
         </Form.Group>
-        <Button variant="primary" onClick={handleCreate}>Crear Versión</Button>
-        <Button variant="secondary" className="ms-2" onClick={handleGet}>Consultar Versión</Button>
-        <Button variant="warning" className="ms-2" onClick={handleUpdate}>Actualizar Versión</Button>
-        <Button variant="danger" className="ms-2" onClick={handleDelete}>Eliminar Versión</Button>
+        <Form.Group className="mt-3">
+          <div className="d-grid gap-2">
+            <Button variant="primary" onClick={handleCreate}>Crear Versión</Button>
+            <Button variant="secondary" className="ms-2" onClick={handleGet}>Consultar Versión</Button>
+            <Button variant="warning" className="ms-2" onClick={handleUpdate}>Actualizar Versión</Button>
+            <Button variant="danger" className="ms-2" onClick={handleDelete}>Eliminar Versión</Button>
+          </div>
+        </Form.Group>
       </Form>
       <div className="mt-4">
         <h4>Resultado:</h4>
