@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import CreateEnte from './components/CreateEnte';
 import QueryEnte from './components/QueryEnte';
 import UpdateEnte from './components/UpdateEnte';
@@ -14,8 +15,9 @@ import CreateUser from './components/CreateUser';
 import QueryUser from './components/QueryUser';
 import UpdateUser from './components/UpdateUSer';
 import DeleteUser from './components/DeleteUser';
+import Evaluacion from './components/Evaluacion';
 import { entes } from '../../declarations/entes/index.js';
-import { roles } from '../../declarations/roles/index.js'; 
+import { roles } from '../../declarations/roles/index.js';
 import { usuario } from '../../declarations/usuario/index.js';
 
 const App = () => {
@@ -182,10 +184,67 @@ const App = () => {
                 </ul>
               </li>
 
+              {/* Enlace para Evaluaciones */}
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/evaluacion">Evaluaciones</Link>
+              </li>
+
+
             </ul>
           </div>
         </div>
       </nav>
+
+      <main class=" container mt-5">
+        <div className="container mt-4">
+          <div className="row text-center">
+            <div className="col-md-12">
+              <h1 className="display-4">Bienvenido al Sistema de Auditoría</h1>
+              <p className="lead">
+                Este software está diseñado para la gestión eficiente y segura de datos sensibles.
+                Proporciona herramientas para la auditoría, el control y la administración de la información.
+              </p>
+              <p>
+                Navegue a través de las secciones a continuación para gestionar entes, roles, usuarios y evaluaciones.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-4 d-flex align-items-stretch mb-4">
+            <div className="card text-center">
+              <div className="card-body">
+                <i className="fas fa-building fa-4x mb-3"></i>
+                <h5 className="card-title">Gestión de Entes</h5>
+                <p className="card-text">Crea, consulta, actualiza y elimina entes en el sistema de auditoría.</p>
+                <Link to="/createEnte" className="btn btn-primary">Crear Ente</Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-md-4 d-flex align-items-stretch mb-4">
+            <div className="card text-center">
+              <div className="card-body">
+                <i className="fas fa-shield-alt fa-4x mb-3"></i>
+                <h5 className="card-title">Gestión de Roles</h5>
+                <p className="card-text">Administra los roles dentro del sistema, incluyendo la creación, actualización y eliminación.</p>
+                <Link to="/createRol" className="btn btn-primary">Crear Rol</Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-md-4 d-flex align-items-stretch mb-4">
+            <div className="card text-center">
+              <div className="card-body">
+                <i className="fas fa-user fa-4x mb-3"></i>
+                <h5 className="card-title">Gestión de Usuarios</h5>
+                <p className="card-text">Gestiona usuarios del sistema con opciones para crear, consultar, actualizar y eliminar.</p>
+                <Link to="/createUser" className="btn btn-primary">Crear Usuario</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
 
       <Routes>
         <Route path="/createEnte" element={<CreateEnte createEnte={createEnte} />} />
@@ -200,6 +259,7 @@ const App = () => {
         <Route path="/queryUser" element={<QueryUser getUser={getUser} />} />
         <Route path="/updateUser" element={<UpdateUser updateUser={updateUser} />} />
         <Route path="/deleteUser" element={<DeleteUser deleteUser={deleteUser} />} />
+        <Route path="/evaluacion" element={<Evaluacion />} />
       </Routes>
     </Router>
   );
