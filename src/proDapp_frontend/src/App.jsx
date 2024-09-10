@@ -216,7 +216,7 @@ const App = () => {
             </div>
           </div>
         </div>
-        <div className="row">
+        {/* <div className="row">
           <div className="col-md-4 d-flex align-items-stretch mb-4">
             <div className="card text-center">
               <div className="card-body">
@@ -249,7 +249,7 @@ const App = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </main>
 
       <Routes>
