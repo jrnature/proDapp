@@ -11,12 +11,12 @@
       "type": "custom",
       "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
     },
-    "usuario": {
-      "main": "src/proDapp_backend/usuario/main.mo",
+    "aspecto": {
+      "main": "src/proDapp_backend/aspecto/main.mo",
       "type": "motoko"
     },
-    "roles": {
-      "main": "src/proDapp_backend/rol/main.mo",
+    "autoevaluaciones": {
+      "main": "src/proDapp_backend/autoevaluacion/main.mo",
       "type": "motoko"
     },
     "entes": {
@@ -27,14 +27,36 @@
       "main": "src/proDapp_backend/estado/main.mo",
       "type": "motoko"
     },
+    "evaluaciones": {
+      "main": "src/proDapp_backend/evaluacion/main.mo",
+      "type": "motoko"
+    },
+    "preguntas": {
+      "main": "src/proDapp_backend/pregunta/main.mo",
+      "type": "motoko"
+    },
     "resultados": {
       "main": "src/proDapp_backend/resultado/main.mo",
+      "type": "motoko"
+    },
+    "resultadosEval": {
+      "main": "src/proDapp_backend/resultadoEval/main.mo",
+      "type": "motoko"
+    },
+    "roles": {
+      "main": "src/proDapp_backend/rol/main.mo",
+      "type": "motoko"
+    },
+    "usuario": {
+      "main": "src/proDapp_backend/usuario/main.mo",
       "type": "motoko"
     },
     "versiones": {
       "main": "src/proDapp_backend/version/main.mo",
       "type": "motoko"
     },
+    
+    
     "proDapp_frontend": {
       "dependencies": [
         "usuario",

@@ -158,7 +158,7 @@ actor {
       Debug.trap("Ingrese el usuario que responde la pregunta");
     };
     if (datos.folioEvaluacion == 0) {
-      Debug.trap("Ingrese el folio de evaluació al que responde la pregunta");
+      Debug.trap("Ingrese el folio de evaluación al que responde la pregunta");
     };
 
     if (autoevaluaciones.replace(idRespuesta, 
