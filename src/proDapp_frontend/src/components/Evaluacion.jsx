@@ -27,6 +27,7 @@ const Evaluacion = () => {
 
   const handleCreate = async () => {
     try {
+
       await evaluaciones.newEvaluacion(parseInt(folio), datos);
       setMessage('Evaluación creada con éxito.');
     } catch (error) {
@@ -63,7 +64,7 @@ const Evaluacion = () => {
         fechaInicio: '',
         fechaFin: '',
         evaluador: 0,
-        resultado: 0,
+        resultado: '',
         estado: 0,
       });
     } catch (error) {
