@@ -27,8 +27,8 @@
       "main": "src/proDapp_backend/estado/main.mo",
       "type": "motoko"
     },
-    "evaluaciones": {
-      "main": "src/proDapp_backend/evaluacion/main.mo",
+    "evaluacion": {
+      "main": "src/proDapp_backend/evaluaciones/main.mo",
       "type": "motoko"
     },
     "preguntas": {
