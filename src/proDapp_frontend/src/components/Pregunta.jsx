@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
-import { preguntas } from '../../../declarations/preguntas/index';
+import { evaluacionIntegral } from '../../../declarations/evaluacionIntegral';
 
 const Pregunta = () => {
   const [idPregunta, setIdPregunta] = useState('');
@@ -28,7 +28,7 @@ const Pregunta = () => {
 
   const handleCreate = async () => {
     try {
-      await preguntas.newUsuario(parseInt(idPregunta), {
+      await evaluacionIntegral.newPregunta(parseInt(idPregunta), {
         numero: parseInt(datos.numero),
         aspecto: parseInt(datos.aspecto),
         numAspecto: parseInt(datos.numAspecto),
@@ -59,7 +59,7 @@ const Pregunta = () => {
   const handleGet = async () => {
     try {
       console.log('ID de Pregunta:', idPregunta);
-      const result = await preguntas.getPregunta(parseInt(idPregunta));
+      const result = await evaluacionIntegral.getPregunta(parseInt(idPregunta));
       console.log('Resultado de la Consulta:', result);
   
       // Convierte los BigInt a Number
@@ -73,26 +73,10 @@ const Pregunta = () => {
     }
   };
 
-//   const handleGet = async () => {
-//     try {
-//       const result = await preguntas.getPregunta(parseInt(idPregunta));
-//       setDatos({
-//         numero: result.numero,
-//         aspecto: result.aspecto,
-//         numAspecto: result.numAspecto,
-//         evidencia: result.evidencia,
-//         activo: result.activo,
-//         version: result.version,
-//       });
-//       setMessage('Pregunta consultada con éxito.');
-//     } catch (error) {
-//       setMessage('Error al consultar la pregunta.');
-//     }
-//   };
 
   const handleUpdate = async () => {
     try {
-      await preguntas.updatePregunta(parseInt(idPregunta), {
+      await evaluacionIntegral.updatePreguntas(parseInt(idPregunta), {
         numero: parseInt(datos.numero),
         aspecto: parseInt(datos.aspecto),
         numAspecto: parseInt(datos.numAspecto),
@@ -108,7 +92,7 @@ const Pregunta = () => {
 
   const handleDelete = async () => {
     try {
-      await preguntas.deleteUsuario(parseInt(idPregunta));
+      await evaluacionIntegral.deleteUsuario(parseInt(idPregunta));
       setMessage('Pregunta eliminada con éxito.');
       setDatos({
         numero: 0,
@@ -196,10 +180,14 @@ const Pregunta = () => {
           />
         </Form.Group>
         <br />
+        <Form.Group className="mt-3">
+          <div className="d-grid gap-2">
         <Button variant="primary" onClick={handleCreate}>Crear Pregunta</Button>
         <Button variant="secondary" className="ms-2" onClick={handleGet}>Consultar Pregunta</Button>
         <Button variant="warning" className="ms-2" onClick={handleUpdate}>Actualizar Pregunta</Button>
         <Button variant="danger" className="ms-2" onClick={handleDelete}>Eliminar Pregunta</Button>
+        </div>
+        </Form.Group>
       </Form>
       <div className="mt-4">
         <h4>Resultado:</h4>
