@@ -31,6 +31,10 @@
       "main": "src/proDapp_backend/evaluaciones/main.mo",
       "type": "motoko"
     },
+    "evaluacionIntegral": {
+      "main": "src/proDapp_backend/evaluacionIntegral/main.mo",
+      "type": "motoko"
+    },
     "preguntas": {
       "main": "src/proDapp_backend/pregunta/main.mo",
       "type": "motoko"

@@ -33,7 +33,7 @@ actor {
 
   let preguntas = Map.HashMap<Int, metaPreguntaInput>(0, Int.equal, Int.hash);
 
-  public func newUsuario(idPregunta : Int, datos : metaPreguntaInput) : async () { 
+  public func newPregunta(idPregunta : Int, datos : metaPreguntaInput) : async () { 
     if (datos.numero == 0) {
       Debug.trap("Ingrese un número de pregunta");
     };
