@@ -17,6 +17,7 @@ import UpdateUser from './components/UpdateUSer';
 import DeleteUser from './components/DeleteUser';
 import Evaluacion from './components/Evaluacion';
 import Version from './components/Version.jsx';
+import Pregunta from './components/Pregunta.jsx';
 import { entes } from '../../declarations/entes/index.js';
 import { roles } from '../../declarations/roles/index.js';
 import { usuario } from '../../declarations/usuario/index.js';
@@ -195,6 +196,11 @@ const App = () => {
                 <Link className="nav-link text-white" to="/version">Versión</Link>
               </li>
 
+              {/* Enlace para Pregunta */}
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/pregunta">Pregunta</Link>
+              </li>
+
 
             </ul>
           </div>
@@ -267,6 +273,7 @@ const App = () => {
         <Route path="/deleteUser" element={<DeleteUser deleteUser={deleteUser} />} />
         <Route path="/evaluacion" element={<Evaluacion />} />
         <Route path="/version" element={<Version />} />
+        <Route path="/pregunta" element={<Pregunta />} />
       </Routes>
     </Router>
   );
