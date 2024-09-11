@@ -19,6 +19,7 @@ import Evaluacion from './components/Evaluacion';
 import Version from './components/Version.jsx';
 import Pregunta from './components/Pregunta.jsx';
 import Resultado from './components/Resultado.jsx'
+import Aspecto from './components/Aspecto.jsx'
 import { entes } from '../../declarations/entes/index.js';
 import { roles } from '../../declarations/roles/index.js';
 import { usuario } from '../../declarations/usuario/index.js';
@@ -205,6 +206,10 @@ const App = () => {
               <li className="nav-item">
                 <Link className="nav-link text-white" to="/resultado">Resultado</Link>
               </li>
+              {/* Enlace para Aspecto */}
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/aspecto">Aspecto</Link>
+              </li>
 
 
             </ul>
@@ -227,40 +232,6 @@ const App = () => {
             </div>
           </div>
         </div>
-        {/* <div className="row">
-          <div className="col-md-4 d-flex align-items-stretch mb-4">
-            <div className="card text-center">
-              <div className="card-body">
-                <i className="fas fa-building fa-4x mb-3"></i>
-                <h5 className="card-title">Gestión de Entes</h5>
-                <p className="card-text">Crea, consulta, actualiza y elimina entes en el sistema de auditoría.</p>
-                <Link to="/createEnte" className="btn btn-primary">Crear Ente</Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-md-4 d-flex align-items-stretch mb-4">
-            <div className="card text-center">
-              <div className="card-body">
-                <i className="fas fa-shield-alt fa-4x mb-3"></i>
-                <h5 className="card-title">Gestión de Roles</h5>
-                <p className="card-text">Administra los roles dentro del sistema, incluyendo la creación, actualización y eliminación.</p>
-                <Link to="/createRol" className="btn btn-primary">Crear Rol</Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-md-4 d-flex align-items-stretch mb-4">
-            <div className="card text-center">
-              <div className="card-body">
-                <i className="fas fa-user fa-4x mb-3"></i>
-                <h5 className="card-title">Gestión de Usuarios</h5>
-                <p className="card-text">Gestiona usuarios del sistema con opciones para crear, consultar, actualizar y eliminar.</p>
-                <Link to="/createUser" className="btn btn-primary">Crear Usuario</Link>
-              </div>
-            </div>
-          </div>
-        </div> */}
       </main>
 
       <Routes>
@@ -280,6 +251,7 @@ const App = () => {
         <Route path="/version" element={<Version />} />
         <Route path="/pregunta" element={<Pregunta />} />
         <Route path="/resultado" element={<Resultado />} />
+        <Route path="/aspecto" element={<Aspecto />} />
       </Routes>
     </Router>
   );
