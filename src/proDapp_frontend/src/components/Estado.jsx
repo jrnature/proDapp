@@ -63,7 +63,7 @@ const Estado = () => {
 
   return (
     <div className="container mt-4">
-      <h2>Gestión de estado</h2>
+      <h2>Gestión de Estado</h2>
       {message && <Alert variant="info">{message}</Alert>}
       <Form>
         <Form.Group controlId="idEstado">

@@ -3,10 +3,12 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import CreateEnte from './components/CreateEnte';
-import QueryEnte from './components/QueryEnte';
-import UpdateEnte from './components/UpdateEnte';
-import DeleteEnte from './components/DeleteEnte';
+import Entes from './components/Entes.jsx'
+import Rol from './components/Rol.jsx';
+// import CreateEnte from './components/CreateEnte';
+// import QueryEnte from './components/QueryEnte';
+// import UpdateEnte from './components/UpdateEnte';
+// import DeleteEnte from './components/DeleteEnte';
 import CreateRol from './components/CreateRol';
 import DeleteRol from './components/DeleteRol';
 import QueryRol from './components/QueryRol';
@@ -151,16 +153,12 @@ const App = () => {
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
 
               {/* Dropdown para Entes */}
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle text-white" href="/" id="entesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Entes
-                </a>
-                <ul className="dropdown-menu" aria-labelledby="entesDropdown">
-                  <li><Link className="dropdown-item" to="/createEnte">Crear Ente</Link></li>
-                  <li><Link className="dropdown-item" to="/queryEnte">Consultar Ente</Link></li>
-                  <li><Link className="dropdown-item" to="/updateEnte">Actualizar Ente</Link></li>
-                  <li><Link className="dropdown-item" to="/deleteEnte">Eliminar Ente</Link></li>
-                </ul>
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/entes">Entes</Link>
+              </li>
+              {/* Dropdown para Roles */}
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/roles">Roles</Link>
               </li>
 
               {/* Dropdown para Roles */}
@@ -240,10 +238,12 @@ const App = () => {
       </main>
 
       <Routes>
-        <Route path="/createEnte" element={<CreateEnte createEnte={createEnte} />} />
+        <Route path="/entes" element={<Entes />} />
+        <Route path="/roles" element={<Rol />} />
+        {/* <Route path="/createEnte" element={<CreateEnte createEnte={createEnte} />} />
         <Route path="/queryEnte" element={<QueryEnte getEnte={getEnte} />} />
         <Route path="/updateEnte" element={<UpdateEnte updateEnte={updateEnte} />} />
-        <Route path="/deleteEnte" element={<DeleteEnte deleteEnte={deleteEnte} />} />
+        <Route path="/deleteEnte" element={<DeleteEnte deleteEnte={deleteEnte} />} /> */}
         <Route path="/createRol" element={<CreateRol createRol={createRol} />} />
         <Route path="/queryRol" element={<QueryRol getRol={getRol} />} />
         <Route path="/updateRol" element={<UpdateRol updateRol={updateRol} />} />

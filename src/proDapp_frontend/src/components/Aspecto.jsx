@@ -63,7 +63,7 @@ const Aspecto = () => {
 
   return (
     <div className="container mt-4">
-      <h2>Gestión de aspecto</h2>
+      <h2>Gestión de Aspecto</h2>
       {message && <Alert variant="info">{message}</Alert>}
       <Form>
         <Form.Group controlId="idAspecto">
