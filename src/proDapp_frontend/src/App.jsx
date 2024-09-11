@@ -20,6 +20,7 @@ import Version from './components/Version.jsx';
 import Pregunta from './components/Pregunta.jsx';
 import Resultado from './components/Resultado.jsx'
 import Aspecto from './components/Aspecto.jsx'
+import Estado from './components/Estado.jsx';
 import { entes } from '../../declarations/entes/index.js';
 import { roles } from '../../declarations/roles/index.js';
 import { usuario } from '../../declarations/usuario/index.js';
@@ -210,6 +211,10 @@ const App = () => {
               <li className="nav-item">
                 <Link className="nav-link text-white" to="/aspecto">Aspecto</Link>
               </li>
+              {/* Enlace para Aspecto */}
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/estado">Estado</Link>
+              </li>
 
 
             </ul>
@@ -252,6 +257,7 @@ const App = () => {
         <Route path="/pregunta" element={<Pregunta />} />
         <Route path="/resultado" element={<Resultado />} />
         <Route path="/aspecto" element={<Aspecto />} />
+        <Route path="/estado" element={<Estado />} />
       </Routes>
     </Router>
   );
