@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
-import { evaluacion } from '../../../declarations/evaluacion/index';
+import { evaluacionIntegral } from '../../../declarations/evaluacionIntegral/index';
 
 const Evaluacion = () => {
   const [folio, setFolio] = useState('');
@@ -43,7 +43,7 @@ const Evaluacion = () => {
     datos1.fechaInicio=datos.fechaInicio
     datos1.fechaFin=datos.fechaFin
     try {
-      await evaluacion.newEvaluacion(parseInt(folio), datos1);
+      await evaluacionIntegral.newEvaluacion(parseInt(folio), datos1);
       setMessage('Evaluación creada con éxito.');
     } catch (error) 
       {
@@ -53,7 +53,7 @@ const Evaluacion = () => {
 
   const handleGet = async () => {
     try {
-      const result = await evaluacion.getEvaluacion(parseInt(folio));
+      const result = await evaluacionIntegral.getEvaluacion(parseInt(folio));
       // Verificar y convertir BigInt a string
       const datosConBigIntConvertidos = {
         ...result,
@@ -83,7 +83,7 @@ const Evaluacion = () => {
         fechaFin: datos.fechaFin,
       };
       
-      await evaluacion.updateEvaluacion(parseInt(folio), datosAEnviar);
+      await evaluacionIntegral.updateEvaluacion(parseInt(folio), datosAEnviar);
       setMessage('Evaluación actualizada con éxito.');
     } catch (error) {
       setMessage('Error al actualizar la evaluación.');
@@ -92,7 +92,7 @@ const Evaluacion = () => {
 
   const handleDelete = async () => {
     try {
-      await evaluacion.deleteEvaluacion(parseInt(folio));
+      await evaluacionIntegral.deleteEvaluacion(parseInt(folio));
       setMessage('Evaluación eliminada con éxito.');
       setDatos({
         ente: 0,
