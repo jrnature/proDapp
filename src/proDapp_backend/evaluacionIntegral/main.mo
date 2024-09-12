@@ -46,6 +46,7 @@ actor {
     evidencia : Bool;
     activo : Bool;
     version : Int;
+    enunciado : Text;
     };
 
   type metaPreguntaInput = {
@@ -55,6 +56,7 @@ actor {
     evidencia : Bool;
     activo : Bool;
     version : Int;
+    enunciado : Text;
   };
   
   type metaAutoevaluacion = {
@@ -354,6 +356,7 @@ actor {
           evidencia=false;
           activo=false;
           version=0;
+          enunciado="";
         };
       };
       case ( ?preguntaGet ) preguntaGet;
@@ -365,6 +368,7 @@ actor {
         evidencia=aux.evidencia;
         activo=aux.activo;
         version=aux.version;
+        enunciado=aux.enunciado;
     };
   };
 
@@ -382,6 +386,9 @@ actor {
     if (datos.version == 0) {
       Debug.trap("Ingrese la versión de la evaluación a la que aplica la pregunta");
     };
+    if (datos.enunciado == "") {
+      Debug.trap("Ingrese el enunciado de la pregunta");
+    };
 
     preguntas.put(idPregunta, {
       numero=datos.numero;
@@ -390,6 +397,7 @@ actor {
       evidencia=datos.evidencia;
       activo=datos.activo;
       version=datos.version;
+      enunciado=datos.enunciado;
     }
    );
   };
@@ -407,9 +415,12 @@ actor {
     if (datos.version == 0) {
       Debug.trap("Ingrese la versión de la evaluación a la que aplica la pregunta");
     };
+    if (datos.enunciado == "") {
+      Debug.trap("Ingrese el enunciado de la pregunta");
+    };
 
     if (preguntas.replace(idPregunta, datos) == null) {
-      Debug.trap("Pregunta no encontrado");
+      Debug.trap("Pregunta no encontrada");
     };
   };
 
