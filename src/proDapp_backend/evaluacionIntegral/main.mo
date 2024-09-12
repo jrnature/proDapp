@@ -256,7 +256,10 @@ actor {
     var  ultimaRespuesta : Int = autoevaluaciones.size();
     for ((numPregunta) in Iter.range(1,numPreguntas))
     {
+      Debug.print("NumPregunta-> " # Int.toText(numPregunta));
       for ((idPregunta,pregunta) in preguntas.entries()){
+        Debug.print("Pregunta.numero-> " # Int.toText(pregunta.numero));
+        Debug.print("Pregunta.activo-> " # Bool.toText(pregunta.activo));
           if (pregunta.numero==numPregunta){
             if ((pregunta.version==datos.version) and (pregunta.activo==true)){
                 var datosAutoevaluacion : metaAutoevaluacionInput={
@@ -279,13 +282,14 @@ actor {
                 autoevaluaciones.put(respuestaActual,datosAutoevaluacion);
             }
             else{
-              Debug.trap("No se encontró la pregunta numero" # Int.toText(numPregunta) # "de la version " # Int.toText(datos.version) # " dentro de las preguntas registradas activas");
+              //Debug.trap("No se encontró la pregunta numero" # Int.toText(numPregunta) # "de la version " # Int.toText(datos.version) # " dentro de las preguntas registradas activas");
             };
-            Debug.trap("No se encontró la pregunta numero" # Int.toText(numPregunta) # "de la version " # Int.toText(datos.version) # " dentro de las preguntas registradas");
-          } 
+          }
+          else{
+            //Debug.trap("No se encontró la pregunta numero" # Int.toText(numPregunta) # "de la version " # Int.toText(datos.version) # " dentro de las preguntas registradas");
+          }; 
       };
     };
-
     Debug.print("Evaluación creada");
   };
 
@@ -359,32 +363,6 @@ actor {
       return tama
   };
 
-  public func newPregunta(idPregunta : Int, datos : metaPreguntaInput) : async () { 
-    if (datos.numero == 0) {
-      Debug.trap("Ingrese un número de pregunta");
-    };
-    if (datos.aspecto == 0) {
-      Debug.trap("Ingrese el aspecto que evalua la pregunta");
-    };
-    if (datos.numAspecto == 0) {
-      Debug.trap("Ingrese el numero de aspecto que evalua la pregunta");
-    };
-    if (datos.version == 0) {
-      Debug.trap("Ingrese la versión de la evaluación a la que aplica la pregunta");
-    };
-    preguntas.put(idPregunta, 
-      {
-        numero =datos.numero; 
-        aspecto=datos.aspecto;
-        numAspecto=datos.numAspecto;
-        evidencia=datos.evidencia;
-        activo=datos.activo;
-        version=datos.version;
-      } 
-    );
-
-    Debug.print("Pregunta agregada");
-  };
 
   public query func getPregunta(idPregunta : Int) : async metaPreguntaInput  {
     let preguntaGet = preguntas.get(idPregunta);
@@ -439,63 +417,6 @@ actor {
   public query func preguntaTamano() : async Text {
       var tama : Text = Nat.toText(preguntas.size());
       return tama
-  };
-
-public func newRespuesta(idRespuesta : Int, datos : metaRespuestaInput) : async () { 
-    if (datos.pregunta == 0) {
-      Debug.trap("Ingrese el número de pregunta a responder");
-    };
-    if (datos.respuesta == "") {
-      Debug.trap("Ingrese la respusta a la pregunta");
-    };
-    if (datos.usuario == 0) {
-      Debug.trap("Ingrese el usuario que responde la pregunta");
-    };
-    if (datos.folioEvaluacion == 0) {
-      Debug.trap("Ingrese el folio de evaluación al que corresponde la respuesta");
-    };
-    autoevaluaciones.put(idRespuesta, 
-      {
-        pregunta=datos.pregunta;
-        respuesta =datos.respuesta; 
-        evidencia=datos.evidencia;
-        usuario=datos.usuario;
-        resultado=0;
-        retroalimentacion="";
-        evaluador=0;
-        replica="";
-        evidenciaReplica="\00";
-        usuarioReplica=0;
-        retroalimentacionFinal="";
-        evaluadorFinal=0;
-        resultadoFinal=0;
-        folioEvaluacion=datos.folioEvaluacion;
-      } 
-    );
-    Debug.print("Respuesta agregada");
-  };
-
-  public query func getRepesta(idRespuesta : Int) : async metaRespuestaInput  {
-    let respuestaGet = autoevaluaciones.get(idRespuesta);
-    var aux = switch (respuestaGet) {
-      case (null) {
-        {
-          pregunta=0;
-          respuesta=""; 
-          evidencia="\00" : Blob;
-          usuario=0;
-          folioEvaluacion=0;
-        };
-      };
-      case (?respuestaGet) respuestaGet;
-    };
-    return {
-        pregunta=aux.pregunta;
-        respuesta=aux.respuesta; 
-        evidencia=aux.evidencia : Blob;
-        usuario=aux.usuario;
-        folioEvaluacion=aux.folioEvaluacion;
-    };
   };
 
   public func updateRespuesta(idRespuesta : Int, datos : metaRespuestaInput) : async () {
