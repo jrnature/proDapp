@@ -10,6 +10,7 @@ import Hash "mo:base/Hash";
 import Int "mo:base/Int";
 import Iter "mo:base/Iter";
 import Bool "mo:base/Bool";
+import Blob "mo:base/Blob";
 
 
 actor {
@@ -60,68 +61,43 @@ actor {
     idRespuesta   : Int;
     pregunta : Int;
     respuesta : Text;
-    evidencia : Blob;
+    evidencia : Text;
     usuario : Int;
     resultado : Int;
     retroalimentacion : Text;
     evaluador : Int;
     replica : Text;
-    evidenciaReplica : Blob;
+    evidenciaReplica : Text;
     usuarioReplica : Int;
     retroalimentacionFinal:Text;
     evaluadorFinal:Int;
     resultadoFinal:Int;
     folioEvaluacion : Int;
+    respondido : Bool;
+    evaluado : Bool;
+    replicado : Bool;
+    evaluadoFinal : Bool;
     };
 
   type metaAutoevaluacionInput = {
     pregunta : Int;
     respuesta : Text;
-    evidencia : Blob;
+    evidencia : Text;
     usuario : Int;
     resultado : Int;
     retroalimentacion : Text;
     evaluador : Int;
     replica : Text;
-    evidenciaReplica : Blob;
+    evidenciaReplica : Text;
     usuarioReplica : Int;
     retroalimentacionFinal:Text;
     evaluadorFinal:Int;
     resultadoFinal:Int;
     folioEvaluacion : Int;
-  };
-
-  type metaRespuestaInput = {
-    pregunta : Int;
-    respuesta : Text;
-    evidencia : Blob;
-    usuario : Int;
-    folioEvaluacion : Int;
-  };
-
-  type metaRetroalimentacionInput = {
-    pregunta : Int;
-    respuesta : Text;
-    evidencia : Blob;
-    usuario : Int;
-    resultado : Int;
-    retroalimentacion : Text;
-    evaluador : Int;
-    folioEvaluacion : Int;
-  };
-
-  type metaReplicaInput = {
-    pregunta : Int;
-    respuesta : Text;
-    evidencia : Blob;
-    usuario : Int;
-    resultado : Int;
-    retroalimentacion : Text;
-    evaluador : Int;
-    replica : Text;
-    evidenciaReplica : Blob;
-    usuarioReplica : Int;
-    folioEvaluacion : Int;
+    respondido : Bool;
+    evaluado : Bool;
+    replicado : Bool;
+    evaluadoFinal : Bool;
   };
   
   type metaAspecto = {
@@ -265,18 +241,22 @@ actor {
                 var datosAutoevaluacion : metaAutoevaluacionInput={
                   pregunta =numPregunta;
                   respuesta ="";
-                  evidencia ="\00";
+                  evidencia ="";
                   usuario=datos.usuario;
                   resultado=0;
                   retroalimentacion="";
                   evaluador=datos.evaluador;
                   replica="";
-                  evidenciaReplica="\00";
+                  evidenciaReplica="";
                   usuarioReplica=0;
                   retroalimentacionFinal="";
                   evaluadorFinal=0;
                   resultadoFinal=0;
                   folioEvaluacion=folio;
+                  respondido=false;
+                  evaluado=false;
+                  replicado=false;
+                  evaluadoFinal=false;
                   };
                 var respuestaActual : Int=ultimaRespuesta+numPregunta;
                 autoevaluaciones.put(respuestaActual,datosAutoevaluacion);
@@ -363,7 +343,6 @@ actor {
       return tama
   };
 
-
   public query func getPregunta(idPregunta : Int) : async metaPreguntaInput  {
     let preguntaGet = preguntas.get(idPregunta);
     var aux = switch (preguntaGet) {
@@ -377,7 +356,7 @@ actor {
           version=0;
         };
       };
-      case (?preguntaGet) preguntaGet;
+      case ( ?preguntaGet ) preguntaGet;
     };
     return {
         numero =aux.numero; 
@@ -387,6 +366,32 @@ actor {
         activo=aux.activo;
         version=aux.version;
     };
+  };
+
+
+  public func newPregunta(idPregunta : Int, datos : metaPreguntaInput) : async () {
+    if (datos.numero == 0) {
+      Debug.trap("Ingrese un número de pregunta");
+    };
+    if (datos.aspecto == 0) {
+      Debug.trap("Ingrese el aspecto que evalua la pregunta");
+    };
+    if (datos.numAspecto == 0) {
+      Debug.trap("Ingrese el numero de aspecto que evalua la pregunta");
+    };
+    if (datos.version == 0) {
+      Debug.trap("Ingrese la versión de la evaluación a la que aplica la pregunta");
+    };
+
+    preguntas.put(idPregunta, {
+      numero=datos.numero;
+      aspecto=datos.aspecto;
+      numAspecto=datos.numAspecto;
+      evidencia=datos.evidencia;
+      activo=datos.activo;
+      version=datos.version;
+    }
+   );
   };
 
   public func updatePregunta(idPregunta : Int, datos : metaPreguntaInput) : async () {
@@ -404,7 +409,7 @@ actor {
     };
 
     if (preguntas.replace(idPregunta, datos) == null) {
-      Debug.trap("Usuario no encontrado");
+      Debug.trap("Pregunta no encontrado");
     };
   };
 
@@ -419,45 +424,58 @@ actor {
       return tama
   };
 
-  public func updateRespuesta(idRespuesta : Int, datos : metaRespuestaInput) : async () {
+  public query func getAutoevaluacion(idRespuesta : Int) : async metaAutoevaluacionInput  {
     let respuestaGet = autoevaluaciones.get(idRespuesta);
     var aux = switch (respuestaGet) {
       case (null) {
-          Debug.trap("Respuesta no encontrada")
+        {
+          pregunta =0;
+          respuesta ="";
+          evidencia ="";
+          usuario=0;
+          resultado=0;
+          retroalimentacion="";
+          evaluador=0;
+          replica="";
+          evidenciaReplica="";
+          usuarioReplica=0;
+          retroalimentacionFinal="";
+          evaluadorFinal=0;
+          resultadoFinal=0;
+          folioEvaluacion=0;
+          respondido=false;
+          evaluado=false;
+          replicado=false;
+          evaluadoFinal=false;
         };
+      };
       case (?respuestaGet) respuestaGet;
     };
-    if (datos.pregunta == 0) {
-      Debug.trap("Ingrese el número de pregunta a responder");
+    return {
+        pregunta =aux.pregunta;
+        respuesta =aux.respuesta;
+        evidencia =aux.evidencia;
+        usuario=aux.usuario;
+        resultado=aux.resultado;
+        retroalimentacion=aux.retroalimentacion;
+        evaluador=aux.evaluador;
+        replica=aux.replica;
+        evidenciaReplica=aux.evidenciaReplica;
+        usuarioReplica=aux.usuarioReplica;
+        retroalimentacionFinal=aux.retroalimentacionFinal;
+        evaluadorFinal=aux.evaluadorFinal;
+        resultadoFinal=aux.resultadoFinal;
+        folioEvaluacion=aux.folioEvaluacion;
+        respondido=aux.respondido;
+        evaluado=aux.evaluado;
+        replicado=aux.replicado;
+        evaluadoFinal=aux.evaluadoFinal;
     };
-    if (datos.respuesta == "") {
-      Debug.trap("Ingrese la respusta a la pregunta");
-    };
-    if (datos.usuario == 0) {
-      Debug.trap("Ingrese el usuario que responde la pregunta");
-    };
-    if (datos.folioEvaluacion == 0) {
-      Debug.trap("Ingrese el folio de evaluación al que responde la pregunta");
-    };
+  };
 
-    if (autoevaluaciones.replace(idRespuesta, 
-    {
-        pregunta=datos.pregunta;
-        respuesta =datos.respuesta; 
-        evidencia=datos.evidencia;
-        usuario=datos.usuario;
-        resultado=0;
-        retroalimentacion="";
-        evaluador=0;
-        replica="";
-        evidenciaReplica="\00";
-        usuarioReplica=0;
-        retroalimentacionFinal="";
-        evaluadorFinal=0;
-        resultadoFinal=0;
-        folioEvaluacion=datos.folioEvaluacion;
-      } ) == null) {
-      Debug.trap("Respuesta no encontrada");
+  public func updateAutoevaluacion(idRespuesta : Int, datos:metaAutoevaluacionInput) : async () {
+    if (autoevaluaciones.replace(idRespuesta, datos) == null) {
+      Debug.trap("Autoevaluación no encontrada");
     };
   };
 
