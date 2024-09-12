@@ -8,6 +8,8 @@ import Debug "mo:base/Debug";
 import Nat16 "mo:base/Nat16";
 import Hash "mo:base/Hash";
 import Int "mo:base/Int";
+import Iter "mo:base/Iter";
+import Bool "mo:base/Bool";
 
 
 actor {
@@ -21,6 +23,7 @@ actor {
     evaluador : Int;
     resultado : Text;
     estado : Int;
+    version : Int;
     };
 
   type metaEvaluacionInput = {
@@ -31,6 +34,7 @@ actor {
     evaluador : Int;
     resultado : Int;
     estado : Int;
+    version : Int;
   };
   
   type metaPregunta = {
@@ -166,10 +170,24 @@ actor {
     descripcion : Text;
 
   };
+
+  type metaVersion = {
+    idVersion   : Int;
+    descripcion : Text;
+    preguntas : Int;
+    };
+
+  type metaVersionInput = {
+    descripcion : Text;
+    preguntas : Int;
+
+  };
+  
+
+  let versiones = Map.HashMap<Int, metaVersionInput>(0, Int.equal, Int.hash);
   
   let estados = Map.HashMap<Int, metaEstadoInput>(0, Int.equal, Int.hash);
   
-
   let resultados = Map.HashMap<Int, metaResultadoInput>(0, Int.equal, Int.hash);
 
   let resultadoEvals = Map.HashMap<Int, metaResultadoEvalInput>(0, Int.equal, Int.hash);
@@ -182,8 +200,7 @@ actor {
 
   let evaluaciones = Map.HashMap<Int, metaEvaluacionInput>(0, Int.equal, Int.hash);
 
-  public func newEvaluacion(folio : Int, datos : metaEvaluacionInput) : async () { 
-    //var preguntasActivas : Pregunta ;
+  public func newEvaluacion(folio : Int, datos : metaEvaluacionInput) : async () {
     if (datos.ente == 0) {
       Debug.trap("Ingrese el ente obligado");
     };
@@ -203,8 +220,13 @@ actor {
       Debug.trap("Ingrese el resultado de la evaluación, si sigue en proceso definir \"No concluida\"");
     };
     if (datos.estado == 0) {
-      Debug.trap("Ingrese el estado que realizará en la evaluacion");
+      Debug.trap("Ingrese el estado en el que se encuentra la evaluacion");
     };
+    if (datos.version == 0) {
+      Debug.trap("Ingrese la versión que aplicará en la evaluacion");
+    };
+
+
     evaluaciones.put(folio, 
       {
         ente =datos.ente; 
@@ -214,10 +236,55 @@ actor {
         evaluador=datos.evaluador;
         resultado=datos.resultado;
         estado=datos.estado;
-      } 
-    
+        version=datos.version;
+    });
+    var datosVersion=versiones.get(datos.version);
+    var aux = switch (datosVersion) {
+      case (null) {
+        {
+          descripcion =""; 
+          preguntas=0;
+        };
+      };
+      case (?datosVersion) datosVersion;
+    };
 
-    );
+    var numPreguntas : Int = aux.preguntas;
+
+
+    
+    var  ultimaRespuesta : Int = autoevaluaciones.size();
+    for ((numPregunta) in Iter.range(1,numPreguntas))
+    {
+      for ((idPregunta,pregunta) in preguntas.entries()){
+          if (pregunta.numero==numPregunta){
+            if ((pregunta.version==datos.version) and (pregunta.activo==true)){
+                var datosAutoevaluacion : metaAutoevaluacionInput={
+                  pregunta =numPregunta;
+                  respuesta ="";
+                  evidencia ="\00";
+                  usuario=datos.usuario;
+                  resultado=0;
+                  retroalimentacion="";
+                  evaluador=datos.evaluador;
+                  replica="";
+                  evidenciaReplica="\00";
+                  usuarioReplica=0;
+                  retroalimentacionFinal="";
+                  evaluadorFinal=0;
+                  resultadoFinal=0;
+                  folioEvaluacion=folio;
+                  };
+                var respuestaActual : Int=ultimaRespuesta+numPregunta;
+                autoevaluaciones.put(respuestaActual,datosAutoevaluacion);
+            }
+            else{
+              Debug.trap("No se encontró la pregunta numero" # Int.toText(numPregunta) # "de la version " # Int.toText(datos.version) # " dentro de las preguntas registradas activas");
+            };
+            Debug.trap("No se encontró la pregunta numero" # Int.toText(numPregunta) # "de la version " # Int.toText(datos.version) # " dentro de las preguntas registradas");
+          } 
+      };
+    };
 
     Debug.print("Evaluación creada");
   };
@@ -234,6 +301,7 @@ actor {
           evaluador=0;
           resultado=0;
           estado=0;
+          version=0;
         };
       };
       case (?evaluacionGet) evaluacionGet;
@@ -246,6 +314,7 @@ actor {
         evaluador=aux.evaluador;
         resultado=aux.resultado;
         estado=aux.estado;
+        version=aux.version;
     };
   };
 
@@ -271,7 +340,9 @@ actor {
     if (datos.estado == 0) {
       Debug.trap("Ingrese el estado que realizará en la evaluacion");
     };
-
+    if (datos.version == 0) {
+      Debug.trap("Ingrese la versión que aplicará en la evaluacion");
+    };
     if (evaluaciones.replace(folio, datos) == null) {
       Debug.trap("Evaluacion no encontrada");
     };
@@ -473,6 +544,11 @@ public func newRespuesta(idRespuesta : Int, datos : metaRespuestaInput) : async 
     if (autoevaluaciones.remove(idRespuesta) == null) {
       Debug.trap("Respuesta no encontrada");
     };
+  };
+
+  public query func autoevaluacionTamano() : async Int {
+      var tama : Int = autoevaluaciones.size();
+      return tama
   };
 
   public func newAspecto(idAspecto : Int, datos : metaAspectoInput) : async () { 
@@ -757,6 +833,77 @@ public func newResultadoEval(idResultadoEval : Int, datos : metaResultadoEvalInp
     estadoText #= "\"idEstado\":-1,\"nombre\":\"Seleccione una opcion\",\"descripcion\":\"Selecciona una opcion\"}";
       
       return estadoText
+  };
+
+  public func newVersion(idVersion : Int, datos : metaVersionInput) : async () { 
+
+    if (datos.descripcion == "") {
+      Debug.trap("Ingrese la descripcion de la versión de Evaluacion");
+    };
+    if (datos.preguntas == 0) {
+      Debug.trap("Ingrese el numero de preguntas de la versión de la evaluacion");
+    };
+    
+    versiones.put(idVersion, 
+      {
+        descripcion=datos.descripcion;
+        preguntas =datos.preguntas; 
+      } 
+    );
+
+    Debug.print("Version agregada");
+  };
+
+  public query func getVersion(idVersion : Int) : async metaVersionInput  {
+    let versionGet = versiones.get(idVersion);
+    var aux = switch (versionGet) {
+      case (null) {
+        {
+          descripcion="";
+          preguntas=0;
+        };
+      };
+      case (?versionGet) versionGet;
+    };
+    return {
+        descripcion=aux.descripcion;
+        preguntas=aux.preguntas; 
+    };
+  };
+
+  public func updateVersion(idVersion : Int, datos : metaVersionInput) : async () {
+     if (datos.descripcion == "") {
+      Debug.trap("Ingrese la descripcion de la versión de Evaluacion");
+    };
+    if (datos.preguntas == 0) {
+      Debug.trap("Ingrese el numero de preguntas de la versión de la evaluacion");
+    };
+
+    if (versiones.replace(idVersion, datos) == null) {
+      Debug.trap("Version no encontrada");
+    };
+  };
+
+  public func deleteVersion(idVersion : Int) : async () {
+    if (versiones.remove(idVersion) == null) {
+      Debug.trap("Version no encontrada")
+    };
+  };
+
+  public query func versionTamano() : async Text {
+      var tama : Text = Nat.toText(versiones.size());
+      return tama
+  };
+
+  public query func versionValores() : async Text {
+    var versionText : Text="";
+   versionText := "{";
+    for ((idVersion, datos) in versiones.entries()) {
+        versionText #= "\"idVersion\" : "  # Int.toText(idVersion) # ",\"descripcion\" : \"" # datos.descripcion # "\" , \"preguntas\": \"" # Int.toText(datos.preguntas) # "\","
+    };
+    versionText #= "\"idVersion\":-1,\"descripcion\":\"Seleccione una opcion\",\"preguntas\":\"Selecciona una opcion\"}";
+      
+      return versionText
   };
 
   public shared (msg) func whoami() : async Principal {
