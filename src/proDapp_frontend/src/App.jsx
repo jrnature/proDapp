@@ -1,8 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Entes from './components/Entes.jsx'
 import Rol from './components/Rol.jsx';
 import Usuarios from './components/Usuarios.jsx';
@@ -13,102 +14,89 @@ import Resultado from './components/Resultado.jsx'
 import Aspecto from './components/Aspecto.jsx'
 import Estado from './components/Estado.jsx';
 import ResultadoEval from './components/ResultadoEval.jsx';
+import Login from './components/Login.jsx';
 
-const App = () => {
-
+const Navbar = () => {
+  const { isAuthenticated, logout } = useAuth();
   return (
-    <Router>
-      <nav className="navbar navbar-expand-lg navbar-light bg-dark">
-        <div className="container-fluid">
-          <a className="navbar-brand text-white" href="/">Gestión del Sistema</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-
-              {/* Dropdown para Entes */}
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/entes">Entes</Link>
-              </li>
-              {/* Dropdown para Roles */}
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/roles">Roles</Link>
-              </li>
-
-              {/* Dropdown para Usuarios */}
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/usuarios">Ususarios</Link>
-              </li>
-
-              {/* Enlace para Evaluaciones */}
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/evaluacion">Evaluaciones</Link>
-              </li>
-
-              {/* Enlace para Version */}
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/version">Versión</Link>
-              </li>
-
-              {/* Enlace para Pregunta */}
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/pregunta">Pregunta</Link>
-              </li>
-              {/* Enlace para Resultado */}
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/resultado">Resultado</Link>
-              </li>
-              {/* Enlace para Aspecto */}
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/aspecto">Aspecto</Link>
-              </li>
-              {/* Enlace para Aspecto */}
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/estado">Estado</Link>
-              </li>
-              {/* Enlace para ResultadoEval */}
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/resulteval">Resultado de Evaluación</Link>
-              </li>
-
-
-            </ul>
-          </div>
+    <nav className="navbar navbar-expand-lg navbar-light bg-dark">
+      <div className="container-fluid">
+        <a className="navbar-brand text-white" href="/">Gestión del Sistema</a>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            {isAuthenticated ? (
+              <>
+                <li className="nav-item"><Link className="nav-link text-white" to="/entes">Entes</Link></li>
+                <li className="nav-item"><Link className="nav-link text-white" to="/roles">Roles</Link></li>
+                <li className="nav-item"><Link className="nav-link text-white" to="/usuarios">Usuarios</Link></li>
+                <li className="nav-item"><Link className="nav-link text-white" to="/evaluacion">Evaluaciones</Link></li>
+                <li className="nav-item"><Link className="nav-link text-white" to="/version">Versión</Link></li>
+                <li className="nav-item"><Link className="nav-link text-white" to="/pregunta">Pregunta</Link></li>
+                <li className="nav-item"><Link className="nav-link text-white" to="/resultado">Resultado</Link></li>
+                <li className="nav-item"><Link className="nav-link text-white" to="/aspecto">Aspecto</Link></li>
+                <li className="nav-item"><Link className="nav-link text-white" to="/estado">Estado</Link></li>
+                <li className="nav-item"><Link className="nav-link text-white" to="/resulteval">Resultado de Evaluación</Link></li>
+                <li className="nav-item"><button className="btn btn-danger" onClick={logout}>Cerrar Sesión</button></li>
+              </>
+            ) : (
+              <li className="nav-item"><Link className="nav-link text-white" to="/login">Iniciar Sesión</Link></li>
+            )}
+          </ul>
         </div>
-      </nav>
-
-      <main class=" container mt-5">
-        <div className="container mt-4">
-          <div className="row text-center">
-            <div className="col-md-12">
-              <h1 className="display-4">Bienvenido al Sistema de Auditoría</h1>
-              <p className="lead">
-                Este software está diseñado para la gestión eficiente y segura de datos sensibles.
-                Proporciona herramientas para la auditoría, el control y la administración de la información.
-              </p>
-              <p>
-                Navegue a través de las secciones a continuación para gestionar entes, roles, usuarios y evaluaciones.
-              </p>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      <Routes>
-        <Route path="/entes" element={<Entes />} />
-        <Route path="/roles" element={<Rol />} />
-        <Route path="/usuarios" element={<Usuarios />} />
-        <Route path="/evaluacion" element={<Evaluacion />} />
-        <Route path="/version" element={<Version />} />
-        <Route path="/pregunta" element={<Pregunta />} />
-        <Route path="/resultado" element={<Resultado />} />
-        <Route path="/aspecto" element={<Aspecto />} />
-        <Route path="/estado" element={<Estado />} />
-        <Route path="/resulteval" element={<ResultadoEval />} />
-      </Routes>
-    </Router>
+      </div>
+    </nav>
   );
 };
+
+const ProtectedRoute = ({ element }) => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? element : <Navigate to="/login" />;
+};
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <main className="container mt-5">
+          <Routes>
+            <Route path="/login" element={<Login onLogin={() => {}} />} />
+            <Route path="/" element={<ProtectedRoute element={<Home />} />} />
+            <Route path="/entes" element={<ProtectedRoute element={<Entes />} />} />
+            <Route path="/roles" element={<ProtectedRoute element={<Rol />} />} />
+            <Route path="/usuarios" element={<ProtectedRoute element={<Usuarios />} />} />
+            <Route path="/evaluacion" element={<ProtectedRoute element={<Evaluacion />} />} />
+            <Route path="/version" element={<ProtectedRoute element={<Version />} />} />
+            <Route path="/pregunta" element={<ProtectedRoute element={<Pregunta />} />} />
+            <Route path="/resultado" element={<ProtectedRoute element={<Resultado />} />} />
+            <Route path="/aspecto" element={<ProtectedRoute element={<Aspecto />} />} />
+            <Route path="/estado" element={<ProtectedRoute element={<Estado />} />} />
+            <Route path="/resulteval" element={<ProtectedRoute element={<ResultadoEval />} />} />
+          </Routes>
+        </main>
+      </Router>
+    </AuthProvider>
+  );
+};
+
+const Home = () => (
+  <div className="container mt-4">
+    <div className="row text-center">
+      <div className="col-md-12">
+        <h1 className="display-4">Bienvenido al Sistema de Auditoría</h1>
+        <p className="lead">
+          Este software está diseñado para la gestión eficiente y segura de datos sensibles.
+          Proporciona herramientas para la auditoría, el control y la administración de la información.
+        </p>
+        <p>
+          Navegue a través de las secciones a continuación para gestionar entes, roles, usuarios y evaluaciones.
+        </p>
+      </div>
+    </div>
+  </div>
+);
 
 export default App;
