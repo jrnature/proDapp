@@ -8,8 +8,6 @@ import Debug "mo:base/Debug";
 import Nat16 "mo:base/Nat16";
 import Hash "mo:base/Hash";
 import Int "mo:base/Int";
-import Autoevaluacion "canister:autoevaluaciones";
-import Pregunta "canister:preguntas";
 
 actor {
 
