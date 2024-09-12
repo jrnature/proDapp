@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
-import { versiones } from '../../../declarations/versiones/index';
+import { evaluacionIntegral } from '../../../declarations/evaluacionIntegral/index';
 
 const Version = () => {
   const [idVersion, setIdVersion] = useState('');
   const [datos, setDatos] = useState({
-    version: '',
-    descripcion: ''
+    descripcion: '',
+    preguntas: 0
   });
   const [message, setMessage] = useState('');
-  const [response, setResponse] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setDatos(prevState => ({ ...prevState, [name]: value }));
+    setDatos(prevState => ({
+      ...prevState,
+      [name]: name === 'preguntas' ? parseInt(value) : value
+    }));
   };
 
   const handleIdVersionChange = (e) => {
@@ -22,42 +24,52 @@ const Version = () => {
 
   const handleCreate = async () => {
     try {
-      await versiones.newVersion(parseInt(idVersion), datos);
+      await evaluacionIntegral.newVersion(parseInt(idVersion), {
+        descripcion: datos.descripcion,
+        preguntas: parseInt(datos.preguntas),
+      });
       setMessage('Versión creada con éxito.');
     } catch (error) {
-      setMessage('Error al crear la versión.');
+      setMessage('Error al crear la versión: ' + error.message);
     }
   };
 
   const handleGet = async () => {
     try {
-      const result = await versiones.getVersion(parseInt(idVersion));
-      setDatos(result);
-      setMessage('Versión consultada con éxito.');
+      const result = await evaluacionIntegral.getVersion(parseInt(idVersion));
+      if (result) {
+        setDatos({
+          descripcion: result.descripcion || '',
+          preguntas: result.preguntas !== undefined ? parseInt(result.preguntas) : 0,
+        });
+        setMessage('Versión consultada con éxito.');
+      } else {
+        setMessage('No se encontró la versión.');
+      }
     } catch (error) {
-      setMessage('Error al consultar la versión.');
+      setMessage('Error al consultar la versión: ' + error.message);
     }
   };
 
   const handleUpdate = async () => {
     try {
-      await versiones.updateVersion(parseInt(idVersion), datos);
+      await evaluacionIntegral.updateVersion(parseInt(idVersion), datos);
       setMessage('Versión actualizada con éxito.');
     } catch (error) {
-      setMessage('Error al actualizar la versión.');
+      setMessage('Error al actualizar la versión: ' + error.message);
     }
   };
 
   const handleDelete = async () => {
     try {
-      await versiones.deleteVersion(parseInt(idVersion));
+      await evaluacionIntegral.deleteVersion(parseInt(idVersion));
       setMessage('Versión eliminada con éxito.');
       setDatos({
-        version: '',
-        descripcion: ''
+        descripcion: '',
+        preguntas: 0
       });
     } catch (error) {
-      setMessage('Error al eliminar la versión.');
+      setMessage('Error al eliminar la versión: ' + error.message);
     }
   };
 
@@ -75,16 +87,6 @@ const Version = () => {
             onChange={handleIdVersionChange}
           />
         </Form.Group>
-        <Form.Group controlId="version">
-          <Form.Label>Versión</Form.Label>
-          <Form.Control
-            type="text"
-            name="version"
-            placeholder="Ingrese la versión"
-            value={datos.version}
-            onChange={handleInputChange}
-          />
-        </Form.Group>
         <Form.Group controlId="descripcion">
           <Form.Label>Descripción</Form.Label>
           <Form.Control
@@ -92,6 +94,16 @@ const Version = () => {
             name="descripcion"
             placeholder="Ingrese la descripción"
             value={datos.descripcion}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+        <Form.Group controlId="preguntas">
+          <Form.Label>Número de Preguntas</Form.Label>
+          <Form.Control
+            type="number"
+            name="preguntas"
+            placeholder="Ingrese el número de preguntas"
+            value={datos.preguntas}
             onChange={handleInputChange}
           />
         </Form.Group>
