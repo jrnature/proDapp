@@ -12,6 +12,7 @@ const Evaluacion = () => {
     evaluador: 0,
     resultado: 0,
     estado: 0,
+    version: 0,
   });
   const [datos1, setDatos1] = useState({
     ente: 0,
@@ -21,6 +22,7 @@ const Evaluacion = () => {
     evaluador: 0,
     resultado: 0,
     estado: 0,
+    version: 0,
   });
   const [message, setMessage] = useState('');
   const [response, setResponse] = useState('');
@@ -40,6 +42,7 @@ const Evaluacion = () => {
     datos1.resultado=parseInt(datos.resultado)
     datos1.evaluador=parseInt(datos.evaluador)
     datos1.estado=parseInt(datos.estado)
+    datos1.version=parseInt(datos.version)
     datos1.fechaInicio=datos.fechaInicio
     datos1.fechaFin=datos.fechaFin
     try {
@@ -62,6 +65,7 @@ const Evaluacion = () => {
         evaluador: typeof result.evaluador === 'bigint' ? result.evaluador.toString() : result.evaluador,
         resultado: typeof result.resultado === 'bigint' ? result.resultado.toString() : result.resultado,
         estado: typeof result.estado === 'bigint' ? result.estado.toString() : result.estado,
+        version: typeof result.version === 'bigint' ? result.version.toString() : result.version,
       };
       setDatos(datosConBigIntConvertidos);
       setMessage('Evaluación consultada con éxito.');
@@ -79,6 +83,7 @@ const Evaluacion = () => {
         resultado: parseInt(datos.resultado),
         evaluador: parseInt(datos.evaluador),
         estado: parseInt(datos.estado),
+        version: parseInt(datos.version),
         fechaInicio: datos.fechaInicio,
         fechaFin: datos.fechaFin,
       };
@@ -102,6 +107,7 @@ const Evaluacion = () => {
         evaluador: 0,
         resultado: 0,
         estado: 0,
+        version: 0,
       });
     } catch (error) {
       setMessage('Error al eliminar la evaluación.');
@@ -189,6 +195,18 @@ const Evaluacion = () => {
             name="estado"
             placeholder="Ingrese el estado"
             value={datos.estado}
+            onChange={handleInputChange}
+          />
+          <br />
+        </Form.Group>
+
+        <Form.Group controlId="version">
+          <Form.Label>Versión</Form.Label>
+          <Form.Control
+            type="number"
+            name="version"
+            placeholder="Ingrese la version"
+            value={datos.version}
             onChange={handleInputChange}
           />
           <br />
