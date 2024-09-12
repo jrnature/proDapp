@@ -12,6 +12,7 @@ import Pregunta from './components/Pregunta.jsx';
 import Resultado from './components/Resultado.jsx'
 import Aspecto from './components/Aspecto.jsx'
 import Estado from './components/Estado.jsx';
+import ResultadoEval from './components/ResultadoEval.jsx';
 
 const App = () => {
 
@@ -66,6 +67,10 @@ const App = () => {
               <li className="nav-item">
                 <Link className="nav-link text-white" to="/estado">Estado</Link>
               </li>
+              {/* Enlace para ResultadoEval */}
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/resulteval">Resultado de Evaluación</Link>
+              </li>
 
 
             </ul>
@@ -100,6 +105,7 @@ const App = () => {
         <Route path="/resultado" element={<Resultado />} />
         <Route path="/aspecto" element={<Aspecto />} />
         <Route path="/estado" element={<Estado />} />
+        <Route path="/resulteval" element={<ResultadoEval />} />
       </Routes>
     </Router>
   );
