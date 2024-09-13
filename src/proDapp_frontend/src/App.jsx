@@ -4,18 +4,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import Entes from './components/Entes.jsx'
+import Entes from './components/Entes.jsx';
 import Rol from './components/Rol.jsx';
 import Usuarios from './components/Usuarios.jsx';
 import Evaluacion from './components/Evaluacion';
 import Version from './components/Version.jsx';
 import Pregunta from './components/Pregunta.jsx';
-import Resultado from './components/Resultado.jsx'
-import Aspecto from './components/Aspecto.jsx'
+import Resultado from './components/Resultado.jsx';
+import Aspecto from './components/Aspecto.jsx';
 import Estado from './components/Estado.jsx';
 import ResultadoEval from './components/ResultadoEval.jsx';
 import Login from './components/Login.jsx';
-import AutoEv from './components/AutoEv.jsx'
+import AutoEv from './components/AutoEv.jsx';
+import ResultEvaluador from './components/ResultEvaluador.jsx';
+import Replica from './components/Replica.jsx'; 
 
 const Navbar = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -52,6 +54,8 @@ const Navbar = () => {
                     <li><Link className="dropdown-item" to="/estado">Estado</Link></li>
                     <li><Link className="dropdown-item" to="/resulteval">Resultado de Evaluación</Link></li>
                     <li><Link className="dropdown-item" to="/autoev">Autoevaluación</Link></li>
+                    <li><Link className="dropdown-item" to="/resultevaluador">Resultado Evaluador</Link></li>
+                    <li><Link className="dropdown-item" to="/replica">Replica</Link></li>
                   </ul>
                 </li>
                 <li className="nav-item">
@@ -69,7 +73,6 @@ const Navbar = () => {
     </nav>
   );
 };
-
 
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated } = useAuth();
@@ -96,6 +99,8 @@ const App = () => {
             <Route path="/estado" element={<ProtectedRoute element={<Estado />} />} />
             <Route path="/resulteval" element={<ProtectedRoute element={<ResultadoEval />} />} />
             <Route path="/autoev" element={<ProtectedRoute element={<AutoEv />} />} />
+            <Route path="/resultevaluador" element={<ProtectedRoute element={<ResultEvaluador />} />} />
+            <Route path="/replica" element={<ProtectedRoute element={<Replica />} />} />
           </Routes>
         </main>
       </Router>

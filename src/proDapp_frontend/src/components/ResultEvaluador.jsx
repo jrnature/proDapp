@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Alert, Row, Col } from 'react-bootstrap';
-import { evaluacionIntegral } from '../../../declarations/evaluacionIntegral'; // Asegúrate de importar la biblioteca correcta
+import { evaluacionIntegral } from '../../../declarations/evaluacionIntegral'; 
 
 const ResultEvaluador = () => {
   const [evaluacion, setEvaluacion] = useState({});
