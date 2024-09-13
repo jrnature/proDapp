@@ -15,6 +15,7 @@ import Aspecto from './components/Aspecto.jsx'
 import Estado from './components/Estado.jsx';
 import ResultadoEval from './components/ResultadoEval.jsx';
 import Login from './components/Login.jsx';
+import AutoEv from './components/AutoEv.jsx'
 
 const Navbar = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -29,20 +30,38 @@ const Navbar = () => {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             {isAuthenticated ? (
               <>
-                <li className="nav-item"><Link className="nav-link text-white" to="/entes">Entes</Link></li>
-                <li className="nav-item"><Link className="nav-link text-white" to="/roles">Roles</Link></li>
-                <li className="nav-item"><Link className="nav-link text-white" to="/usuarios">Usuarios</Link></li>
-                <li className="nav-item"><Link className="nav-link text-white" to="/evaluacion">Evaluaciones</Link></li>
-                <li className="nav-item"><Link className="nav-link text-white" to="/version">Versión</Link></li>
-                <li className="nav-item"><Link className="nav-link text-white" to="/pregunta">Pregunta</Link></li>
-                <li className="nav-item"><Link className="nav-link text-white" to="/resultado">Resultado</Link></li>
-                <li className="nav-item"><Link className="nav-link text-white" to="/aspecto">Aspecto</Link></li>
-                <li className="nav-item"><Link className="nav-link text-white" to="/estado">Estado</Link></li>
-                <li className="nav-item"><Link className="nav-link text-white" to="/resulteval">Resultado de Evaluación</Link></li>
-                <li className="nav-item"><button className="btn btn-danger" onClick={logout}>Cerrar Sesión</button></li>
+                <li className="nav-item">
+                  <Link className="nav-link text-white" to="/entes">Entes</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link text-white" to="/roles">Roles</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link text-white" to="/usuarios">Usuarios</Link>
+                </li>
+                <li className="nav-item dropdown">
+                  <a className="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Evaluación Integral
+                  </a>
+                  <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><Link className="dropdown-item" to="/evaluacion">Evaluaciones</Link></li>
+                    <li><Link className="dropdown-item" to="/version">Versión</Link></li>
+                    <li><Link className="dropdown-item" to="/pregunta">Pregunta</Link></li>
+                    <li><Link className="dropdown-item" to="/resultado">Resultado</Link></li>
+                    <li><Link className="dropdown-item" to="/aspecto">Aspecto</Link></li>
+                    <li><Link className="dropdown-item" to="/estado">Estado</Link></li>
+                    <li><Link className="dropdown-item" to="/resulteval">Resultado de Evaluación</Link></li>
+                    <li><Link className="dropdown-item" to="/autoev">Autoevaluación</Link></li>
+                  </ul>
+                </li>
+                <li className="nav-item">
+                  <button className="btn btn-danger" onClick={logout}>Cerrar Sesión</button>
+                </li>
               </>
             ) : (
-              <li className="nav-item"><Link className="nav-link text-white" to="/login">Iniciar Sesión</Link></li>
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/login">Iniciar Sesión</Link>
+              </li>
             )}
           </ul>
         </div>
@@ -50,6 +69,7 @@ const Navbar = () => {
     </nav>
   );
 };
+
 
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated } = useAuth();
@@ -75,6 +95,7 @@ const App = () => {
             <Route path="/aspecto" element={<ProtectedRoute element={<Aspecto />} />} />
             <Route path="/estado" element={<ProtectedRoute element={<Estado />} />} />
             <Route path="/resulteval" element={<ProtectedRoute element={<ResultadoEval />} />} />
+            <Route path="/autoev" element={<ProtectedRoute element={<AutoEv />} />} />
           </Routes>
         </main>
       </Router>

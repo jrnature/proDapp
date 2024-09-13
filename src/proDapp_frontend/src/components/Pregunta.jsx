@@ -11,6 +11,7 @@ const Pregunta = () => {
     evidencia: false,
     activo: false,
     version: 0,
+    enunciado:'',
   });
   const [message, setMessage] = useState('');
   
@@ -35,6 +36,7 @@ const Pregunta = () => {
         evidencia: datos.evidencia,
         activo: datos.activo,
         version: parseInt(datos.version),
+        enunciado: datos.enunciado,
       });
       setMessage('Pregunta creada con éxito.');
     } catch (error) {
@@ -83,6 +85,8 @@ const Pregunta = () => {
         evidencia: datos.evidencia,
         activo: datos.activo,
         version: parseInt(datos.version),
+        enunciado: datos.enunciado,
+
       });
       setMessage('Pregunta actualizada con éxito.');
     } catch (error) {
@@ -176,6 +180,16 @@ const Pregunta = () => {
             name="version"
             placeholder="Ingrese la versión"
             value={datos.version}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+        <Form.Group controlId="enunciado">
+          <Form.Label>Enunciado de la pregunta</Form.Label>
+          <Form.Control
+            type="text"
+            name="enunciado"
+            placeholder="Ingrese el enunciado de la pregunta"
+            value={datos.enunciado}
             onChange={handleInputChange}
           />
         </Form.Group>
