@@ -15,7 +15,7 @@ const Replica = () => {
     setLoading(true);
     try {
      
-      const result = await evaluacionIntegral.getAutoevaluacion(parseInt(folio, 10));
+      const result = await evaluacionIntegral.getEvaluacion(parseInt(folio, 10));
       setEvaluacion(result);
       setMessage('Evaluación consultada con éxito.');
     } catch (error) {

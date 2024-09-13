@@ -12,11 +12,14 @@ const AutoevaluacionView = () => {
 
   // Función para obtener preguntas
   const obtenerPreguntas = async () => {
+    setLoading(true); // Asegúrate de que loading sea true al comenzar la solicitud
     try {
-      // Asume que hay una función que obtiene todas las preguntas
+      // Asegúrate de que getPregunta() esté correctamente implementada en el backend
       const result = await evaluacionIntegral.getPregunta(); 
       setPreguntas(result);
+      setMessage('Preguntas cargadas con éxito.');
     } catch (error) {
+      setPreguntas([]); // Asegúrate de limpiar las preguntas si hay un error
       setMessage('Error al cargar las preguntas.');
       console.error('Error al obtener preguntas:', error);
     } finally {
@@ -47,7 +50,6 @@ const AutoevaluacionView = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-     
       await evaluacionIntegral.updateAutoevaluacion(parseInt(idRespuesta), respuestas);
       setMessage('Autoevaluación actualizada correctamente.');
     } catch (error) {
