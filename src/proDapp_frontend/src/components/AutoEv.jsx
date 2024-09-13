@@ -47,7 +47,7 @@ const AutoevaluacionView = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Asegúrate de que 'respuestas' tenga todos los campos necesarios
+     
       await evaluacionIntegral.updateAutoevaluacion(parseInt(idRespuesta), respuestas);
       setMessage('Autoevaluación actualizada correctamente.');
     } catch (error) {
