@@ -8,12 +8,14 @@ const Replica = () => {
   const [evidencia, setEvidencia] = useState('');
   const [evaluacion, setEvaluacion] = useState(null);
   const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  // Función para obtener evaluación por folio
+
   const obtenerEvaluacion = async () => {
+    setLoading(true);
     try {
-      const result = await evaluacionIntegral.getEvaluacion(parseInt(folio));
+     
+      const result = await evaluacionIntegral.getAutoevaluacion(parseInt(folio, 10));
       setEvaluacion(result);
       setMessage('Evaluación consultada con éxito.');
     } catch (error) {
@@ -34,12 +36,17 @@ const Replica = () => {
   // Función para enviar los datos de la réplica
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!folio) {
+      setMessage('Ingrese un folio para consultar.');
+      return;
+    }
     try {
-      if (!folio) {
-        setMessage('Ingrese un folio para consultar.');
-        return;
-      }
-      await evaluacionIntegral.replicarEvaluacion(parseInt(folio), replica, evidencia);
+      // Aquí asumimos que hay un método para actualizar la autoevaluación con los datos de réplica
+      await evaluacionIntegral.updateAutoevaluacion(parseInt(folio, 10), {
+        ...evaluacion, // Mantén los datos existentes
+        replica, // Actualiza con la nueva réplica
+        evidenciaReplica: evidencia // Asigna la evidencia
+      });
       setMessage('Réplica de evaluación creada correctamente.');
     } catch (error) {
       setMessage('Error al crear la réplica de la evaluación.');
@@ -63,7 +70,7 @@ const Replica = () => {
 
   return (
     <div className="container mt-5">
-      <h1 className="text-center">Replica de Evaluación</h1>
+      <h1 className="text-center">Réplica de Evaluación</h1>
       {message && <Alert variant="info">{message}</Alert>}
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="folio">
@@ -80,12 +87,10 @@ const Replica = () => {
           <div className="mt-4">
             <h4>Detalles de la Evaluación</h4>
             <p><strong>Usuario:</strong> {evaluacion.usuario}</p>
-            <p><strong>Fecha de Inicio:</strong> {evaluacion.fechaInicio}</p>
-            <p><strong>Fecha de Fin:</strong> {evaluacion.fechaFin}</p>
-            <p><strong>Evaluador:</strong> {evaluacion.evaluador}</p>
+            <p><strong>Pregunta:</strong> {evaluacion.pregunta}</p>
             <p><strong>Resultado:</strong> {evaluacion.resultado}</p>
-            <p><strong>Estado:</strong> {evaluacion.estado}</p>
-            <p><strong>Versión:</strong> {evaluacion.version}</p>
+            <p><strong>Retroalimentación:</strong> {evaluacion.retroalimentacion}</p>
+            {/* Agrega otros campos relevantes de la evaluación aquí */}
           </div>
         )}
 

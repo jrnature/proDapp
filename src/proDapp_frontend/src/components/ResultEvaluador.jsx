@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Form, Alert, Row, Col } from 'react-bootstrap';
 import { evaluacionIntegral } from '../../../declarations/evaluacionIntegral'; 
 
 const ResultEvaluador = () => {
-  const [evaluacion, setEvaluacion] = useState({});
+  const [evaluacion, setEvaluacion] = useState(null);
   const [idEvaluacion, setIdEvaluacion] = useState('');
   const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  // Función para obtener la evaluación
+  // Función para obtener la autoevaluación
   const obtenerEvaluacion = async () => {
+    setLoading(true);
     try {
-      const result = await evaluacionIntegral.getEvaluacion(parseInt(idEvaluacion));
+     
+      const result = await evaluacionIntegral.getAutoevaluacion(parseInt(idEvaluacion, 10));
       setEvaluacion(result);
       setMessage('Evaluación consultada con éxito.');
     } catch (error) {
