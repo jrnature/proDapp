@@ -1,22 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Form, Alert, Row, Col } from 'react-bootstrap';
-import { evaluacionIntegral } from '../../../declarations/evaluacionIntegral'; 
+import { evaluacionIntegral } from '../../../declarations/evaluacionIntegral';
 
 const Replica = () => {
-  const [folio, setFolio] = useState('');
+  const [idRespuesta, setIdRespuesta] = useState('');
   const [replica, setReplica] = useState('');
   const [evidencia, setEvidencia] = useState('');
+  const [usuarioReplica, setUsuarioReplica] = useState('');
+  const [replicado, setReplicado] = useState(false);
   const [evaluacion, setEvaluacion] = useState(null);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-
+  // Función para obtener la evaluación
   const obtenerEvaluacion = async () => {
     setLoading(true);
     try {
-     
-      const result = await evaluacionIntegral.getEvaluacion(parseInt(folio, 10));
+      const result = await evaluacionIntegral.getAutoevaluacion(parseInt(idRespuesta, 10));
       setEvaluacion(result);
+      // Seteamos los campos con los valores recibidos de la evaluación
+      setReplica(result.replica || '');
+      setEvidencia(result.evidenciaReplica || '');
+      setUsuarioReplica(result.usuarioReplica || '');
+      setReplicado(result.replicado || false);
       setMessage('Evaluación consultada con éxito.');
     } catch (error) {
       setMessage('Error al consultar la evaluación.');
@@ -28,39 +34,43 @@ const Replica = () => {
 
   // Función para manejar el cambio en los campos del formulario
   const handleInputChange = (e) => {
-    const { id, value } = e.target;
+    const { id, value, type, checked } = e.target;
     if (id === 'replica') setReplica(value);
     if (id === 'evidencia') setEvidencia(value);
+    if (id === 'usuarioReplica') setUsuarioReplica(value);
+    if (id === 'replicado') setReplicado(checked); // Para checkbox
   };
 
-  // Función para enviar los datos de la réplica
+  // Función para enviar los datos de la réplica (actualización)
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!folio) {
-      setMessage('Ingrese un folio para consultar.');
+    if (!idRespuesta) {
+      setMessage('Ingrese un ID de respuesta para consultar.');
       return;
     }
     try {
-      // Aquí asumimos que hay un método para actualizar la autoevaluación con los datos de réplica
-      await evaluacionIntegral.updateAutoevaluacion(parseInt(folio, 10), {
-        ...evaluacion, // Mantén los datos existentes
-        replica, // Actualiza con la nueva réplica
-        evidenciaReplica: evidencia // Asigna la evidencia
+      // Actualizar los datos de la evaluación con los nuevos datos de réplica
+      await evaluacionIntegral.updateAutoevaluacion(parseInt(idRespuesta, 10), {
+        ...evaluacion, // Mantener los datos existentes
+        replica,
+        evidenciaReplica: evidencia,
+        usuarioReplica: parseInt(usuarioReplica, 10),
+        replicado
       });
-      setMessage('Réplica de evaluación creada correctamente.');
+      setMessage('Réplica de evaluación actualizada correctamente.');
     } catch (error) {
-      setMessage('Error al crear la réplica de la evaluación.');
-      console.error('Error al crear réplica de evaluación:', error);
+      setMessage('Error al actualizar la réplica de la evaluación.');
+      console.error('Error al actualizar réplica de evaluación:', error);
     }
   };
 
-  const handleFolioChange = (e) => {
-    setFolio(e.target.value);
+  const handleIdRespuestaChange = (e) => {
+    setIdRespuesta(e.target.value);
   };
 
   const handleGetEvaluacion = async () => {
-    if (!folio) {
-      setMessage('Ingrese un folio para consultar.');
+    if (!idRespuesta) {
+      setMessage('Ingrese un ID de respuesta para consultar.');
       return;
     }
     await obtenerEvaluacion();
@@ -73,24 +83,20 @@ const Replica = () => {
       <h1 className="text-center">Réplica de Evaluación</h1>
       {message && <Alert variant="info">{message}</Alert>}
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="folio">
-          <Form.Label>Folio</Form.Label>
+        <Form.Group controlId="idRespuesta">
+          <Form.Label>ID de Respuesta</Form.Label>
           <Form.Control
             type="number"
-            placeholder="Ingrese el folio de la evaluación"
-            value={folio}
-            onChange={handleFolioChange}
+            placeholder="Ingrese el ID de la respuesta"
+            value={idRespuesta}
+            onChange={handleIdRespuestaChange}
           />
         </Form.Group>
 
         {evaluacion && (
           <div className="mt-4">
-            <h4>Detalles de la Evaluación</h4>
-            <p><strong>Usuario:</strong> {evaluacion.usuario}</p>
-            <p><strong>Pregunta:</strong> {evaluacion.pregunta}</p>
-            <p><strong>Resultado:</strong> {evaluacion.resultado}</p>
+            <h4>Detalles de la Auto Evaluación</h4>
             <p><strong>Retroalimentación:</strong> {evaluacion.retroalimentacion}</p>
-            {/* Agrega otros campos relevantes de la evaluación aquí */}
           </div>
         )}
 
@@ -114,6 +120,25 @@ const Replica = () => {
           />
         </Form.Group>
 
+        <Form.Group controlId="usuarioReplica" className="mt-4">
+          <Form.Label>Usuario Réplica</Form.Label>
+          <Form.Control
+            type="number"
+            placeholder="Ingrese el ID del usuario que realiza la réplica"
+            value={usuarioReplica}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="replicado" className="mt-4">
+          <Form.Check
+            type="checkbox"
+            label="Replicado"
+            checked={replicado}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
         <Row className="mt-4">
           <Col>
             <Button variant="secondary" className="w-100" onClick={handleGetEvaluacion}>
@@ -122,7 +147,7 @@ const Replica = () => {
           </Col>
           <Col>
             <Button type="submit" variant="primary" className="w-100">
-              Crear Réplica
+              Actualizar Réplica
             </Button>
           </Col>
         </Row>

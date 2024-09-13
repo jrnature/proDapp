@@ -12,7 +12,6 @@ const ResultEvaluador = () => {
   const obtenerEvaluacion = async () => {
     setLoading(true);
     try {
-     
       const result = await evaluacionIntegral.getAutoevaluacion(parseInt(idEvaluacion, 10));
       setEvaluacion(result);
       setMessage('Evaluación consultada con éxito.');
@@ -24,8 +23,39 @@ const ResultEvaluador = () => {
     }
   };
 
+  // Función para actualizar la evaluación
+  const actualizarEvaluacion = async () => {
+    setLoading(true);
+    try {
+      await evaluacionIntegral.updateAutoevaluacion(parseInt(idEvaluacion, 10), evaluacion);
+      setMessage('Evaluación actualizada correctamente.');
+    } catch (error) {
+      setMessage('Error al actualizar la evaluación.');
+      console.error('Error al actualizar evaluación:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Maneja cambios en el campo ID de Evaluación
   const handleIdEvaluacionChange = (e) => {
     setIdEvaluacion(e.target.value);
+  };
+
+  // Maneja cambios en el campo Resultado
+  const handleResultadoChange = (e) => {
+    setEvaluacion({
+      ...evaluacion,
+      resultado: parseInt(e.target.value, 10) || 0, // Convertir a número, o 0 si no es válido
+    });
+  };
+
+  // Maneja cambios en el campo Retroalimentación
+  const handleRetroalimentacionChange = (e) => {
+    setEvaluacion({
+      ...evaluacion,
+      retroalimentacion: e.target.value,
+    });
   };
 
   const handleGetEvaluacion = async () => {
@@ -67,9 +97,9 @@ const ResultEvaluador = () => {
             <Form.Group controlId="resultado">
               <Form.Label>Resultado</Form.Label>
               <Form.Control
-                type="text"
-                readOnly
-                value={evaluacion.resultado ? 'Evaluado' : 'No Evaluado'}
+                type="number" // Asegura que solo se puedan ingresar números
+                value={evaluacion.resultado}
+                onChange={handleResultadoChange}
               />
             </Form.Group>
 
@@ -78,10 +108,19 @@ const ResultEvaluador = () => {
               <Form.Control
                 as="textarea"
                 rows={3}
-                readOnly
-                value={evaluacion.retroalimentacion || 'No hay retroalimentación'}
+                value={evaluacion.retroalimentacion}
+                onChange={handleRetroalimentacionChange}
               />
             </Form.Group>
+
+            {/* Botón de actualizar */}
+            <Row className="mt-4">
+              <Col>
+                <Button variant="primary" className="w-100" onClick={actualizarEvaluacion}>
+                  Actualizar Evaluación
+                </Button>
+              </Col>
+            </Row>
           </div>
         )}
       </Form>
